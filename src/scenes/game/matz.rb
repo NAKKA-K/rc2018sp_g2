@@ -37,6 +37,8 @@ class Matz
         update_status
     end
 
+    private
+
     # @favorability_rateを元に、statusを変更する
     # @favorability_rateが変更された後に呼び出す
     def update_status
