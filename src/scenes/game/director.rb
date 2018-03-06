@@ -27,6 +27,10 @@ module Game
             @player.x -= @dx if Input.key_down?(K_LEFT)
             @player.y -= @dx if Input.key_down?(K_UP)
             @player.y += @dx if Input.key_down?(K_DOWN)
+
+            if @board.digital_read(2) != 0
+                SceneMgr.move_to(:result)
+            end
         end
 
         def draw
