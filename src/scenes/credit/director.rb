@@ -1,20 +1,23 @@
-﻿module Credit
+﻿require_relative '../../sensors/button_sensor'
+module Credit
     
     class Director
         def initialize(board)
             @font = Font.new(32, 'MS Pゴシック')
             @board = board
+            @button_sensor = ButtonSensor.new(pin: 2)
         end
 
         def play
             draw
             update
+            @button_sensor.update
         end
 
         private
 
         def update
-            if @board.digital_read(2) != 0
+            if @button_sensor.down?
                 SceneMgr.move_to(:title)
             end
         end
