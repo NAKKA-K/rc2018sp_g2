@@ -1,7 +1,7 @@
 require 'dxruby'
-require_relative 'scene'
-require_relative 'scene_title/director'
-require_relative 'scene_game/director'
+require_relative 'scene_mgr'
+require_relative 'scenes/title/director'
+require_relative 'scenes/game/director'
 require_relative 'sensors/sensor'
 
 $DEBUG = true
@@ -11,13 +11,13 @@ Window.height = 600
 
 board = Sensor.board
 
-Scene.add(Title::Director.new(board), :title)
-Scene.add(Game::Director.new(board), :game)
+SceneMgr.add(Title::Director.new(board), :title)
+SceneMgr.add(Game::Director.new(board), :game)
 
-Scene.move_to(:title)
+SceneMgr.move_to(:title)
 
 Window.loop do
     break if Input.key_push?(K_ESCAPE)
 
-    Scene.play
+    SceneMgr.play
 end

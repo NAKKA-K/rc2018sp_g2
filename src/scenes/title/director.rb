@@ -15,7 +15,7 @@
 
         def update
             if Input.key_push?(K_RETURN)
-                Scene.move_to(:game)
+                SceneMgr.move_to(:game)
             end
         end
 

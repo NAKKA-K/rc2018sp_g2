@@ -1,4 +1,4 @@
-class Scene
+class SceneMgr
     @@scenes = {}
     @@current_scene_name = nil
 
