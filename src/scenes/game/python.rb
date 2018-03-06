@@ -1,5 +1,5 @@
-class Ruby < Item
-    @@status = :ruby
+class Python < Item
+    @@status = :python
     def status
         @@status
     end

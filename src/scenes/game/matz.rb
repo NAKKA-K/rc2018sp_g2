@@ -18,7 +18,6 @@ class Matz
         @@favorability_status
     end
 
-
     def initialize
         @big_matz = Image.load('images/big_matz.jpeg')
         @small_matz = Image.load('images/small_matz.jpeg')
