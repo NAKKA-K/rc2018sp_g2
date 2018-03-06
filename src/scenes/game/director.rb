@@ -11,7 +11,6 @@ module Game
             @board = board
             @player = Player.new
             @ruby = ::Ruby.new(100,100,"images/python.png")
-            @ruby2 = ::Ruby.new(300,100,"images/python.png")
             @frm = 1
             @dx = 0
             @button_sensor = ButtonSensor.new(pin: 2)
@@ -36,7 +35,6 @@ module Game
             @player.y += @dx if Input.key_down?(K_DOWN)
           
             @ruby.update
-            @ruby2.update
             if @button_sensor.down?
                 SceneMgr.move_to(:result)
             end
@@ -45,7 +43,6 @@ module Game
         def draw
             @player.draw
             @ruby.draw
-            @ruby2.draw
         end
     end
 end
