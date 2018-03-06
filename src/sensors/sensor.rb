@@ -4,7 +4,11 @@ require 'smalrubot'
 class Sensor
     @@board = Smalrubot::Board.new(Smalrubot::TxRx::Serial.new)
 
-    attr_reader :raw_value :board
+    def self.board
+        @@board
+    end
+
+    attr_reader :raw_value
 
     def initialize(port: 0, pin: 0)
         @port = port
