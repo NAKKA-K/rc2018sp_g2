@@ -18,9 +18,7 @@ module Title
         private
 
         def update
-            if @board.digital_read(2) != 0
-                SceneMgr.move_to(:game)
-            elsif @button_sensor.down?
+            if @button_sensor.down?
                 SceneMgr.move_to(:game)
             end
         end
@@ -29,6 +27,7 @@ module Title
             Window.draw_font(250, 280, "タイトル画面", @font)
 
             if $DEBUG
+                p @button_sensor.raw_value
             end
         end
     end
