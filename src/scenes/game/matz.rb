@@ -7,13 +7,21 @@
 =end
 
 class Matz
+    @@favorability_rate = 20 # 好感度 
+    @@favorability_status = 'normal' # 好感度段階
+
+    def self.favorability_rate
+        @@favorability_rate
+    end
+
+    def self.favorability_status
+        @@favorability_status
+    end
+
 
     def initialize
         @big_matz = Image.load('images/big_matz.jpeg')
         @small_matz = Image.load('images/small_matz.jpeg')
-
-        @favorability_rate = 20 # 好感度 
-        @favorability_status = 'normal' # 好感度段階
 
         @font = Font.new(32, 'MS Pゴシック')
     end
@@ -21,8 +29,8 @@ class Matz
     def draw
         Window.draw(200, 50, @big_matz)
         Window.draw(700, 500, @small_matz)
-        Window.draw_font(700, 300, "#{@favorability_status}", @font)
-        Window.draw_font(700, 400, "#{@favorability_rate}", @font)
+        Window.draw_font(700, 300, "#{@@favorability_status}", @font)
+        Window.draw_font(700, 400, "#{@@favorability_rate}", @font)
     end
 
     def receive_present(present_item)
