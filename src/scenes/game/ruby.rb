@@ -1,9 +1,9 @@
 class Ruby < Item
-    @@status = :Ruby
+    @@status = :ruby
     def status
         @@status
     end
     def update
-        @y += @dy
+        #@y += @dy
     end
 end
