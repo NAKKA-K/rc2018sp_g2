@@ -1,5 +1,5 @@
 class Ruby < Item
-    @@status = "Ruby"
+    @@status = :Ruby
     def status
         @@status
     end
