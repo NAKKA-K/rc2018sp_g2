@@ -1,5 +1,7 @@
+require_relative 'sensor'
+
 class ButtonSensor < Sensor
-    attr_reader :raw_value
+    attr_reader :key_process
 
     def initialize(port: 0, pin: 0)
         super
@@ -7,7 +9,8 @@ class ButtonSensor < Sensor
     end
 
     def update
-        if !!(@raw_value = Sensor.board.digital_read(@pin))
+        @raw_value = Sensor.board.digital_read(@pin)
+        if on?
             @key_process += 1
         else
             @key_process = 0
@@ -21,7 +24,11 @@ class ButtonSensor < Sensor
 
     # true,falseでのみ返す
     def on?
-        !!@raw_value
+        if @raw_value == 1
+            true
+        else
+            false
+        end
     end
 
 end
