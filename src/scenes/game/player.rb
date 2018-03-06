@@ -1,6 +1,6 @@
 class Player
     attr_accessor :x, :y
-
+    
     def initialize(x = 300, y = 300)
         @image = Image.load('images/player.png')
         @image.set_color_key(C_BLACK)
@@ -17,5 +17,4 @@ class Player
         @y = 600 if @y < 0 - @image.height
     end
 end
-        
 		    

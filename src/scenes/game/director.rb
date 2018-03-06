@@ -1,5 +1,7 @@
+require_relative '../../sensors/button_sensor'
 require_relative 'player'
 require_relative 'item'
+require_relative 'ruby'
 require 'smalrubot'
 
 module Game
@@ -8,14 +10,16 @@ module Game
         def initialize(board)
             @board = board
             @player = Player.new
-            @item = Item.new
+            @ruby = ::Ruby.new(100,100,"images/python.png")
             @frm = 1
             @dx = 0
+            @button_sensor = ButtonSensor.new(pin: 2)
         end
 
         def play
             draw
             update
+            @button_sensor.update
         end
 
         private
@@ -30,16 +34,15 @@ module Game
             @player.y -= @dx if Input.key_down?(K_UP)
             @player.y += @dx if Input.key_down?(K_DOWN)
 
-            if @board.digital_read(2) != 0
-              #  SceneMgr.move_to(:result)
+            @ruby.update
+            if @button_sensor.down?
+                SceneMgr.move_to(:result)
             end
         end
 
         def draw
             @player.draw
-            @item.draw
+            @ruby.draw
         end
     end
-
 end
-
