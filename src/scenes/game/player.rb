@@ -17,5 +17,4 @@ class Player
         @y = 600 if @y < 0 - @image.height
     end
 end
-        
 		    
