@@ -11,11 +11,11 @@ module Game
             @board = board
             @player = Player.new
             @ruby = ::Ruby.new(100,100,"images/python.png")
+            @bg = Image.load("images/background.jpg")
             @frm = 1
             @dx = 0
             @button_sensor = ButtonSensor.new(pin: 2)
         end
-
         def play
             draw
             update
@@ -41,6 +41,7 @@ module Game
         end
 
         def draw
+            Window.draw(0, 0, @bg)
             @player.draw
             @ruby.draw
         end
