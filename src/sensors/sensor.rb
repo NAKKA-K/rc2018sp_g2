@@ -1,12 +1,11 @@
 require 'smalrubot'
 
 
-loop do
-    p board.degital_read(2)
-end
-
 class Sensor
-    board = Smalrubot::Board.new(Smalrubot::TxRx::Serial.new)
+    @@board = Smalrubot::Board.new(Smalrubot::TxRx::Serial.new)
+    def self.board
+        @@board
+    end
 
     def initialize(port: 0, pin: 0)
         @port = port
