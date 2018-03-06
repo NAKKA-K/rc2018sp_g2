@@ -1,4 +1,4 @@
-﻿module Title
+﻿module Credit
     
     class Director
         def initialize(board)
@@ -15,12 +15,12 @@
 
         def update
             if @board.digital_read(2) != 0
-                SceneMgr.move_to(:game)
+                SceneMgr.move_to(:title)
             end
         end
 
         def draw
-            Window.draw_font(250, 280, "タイトル画面", @font)
+            Window.draw_font(250, 280, "credit画面", @font)
 
             if $DEBUG
                 p @board.digital_read(2)
