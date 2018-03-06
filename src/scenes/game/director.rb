@@ -2,6 +2,7 @@ require_relative '../../sensors/button_sensor'
 require_relative 'player'
 require_relative 'item'
 require_relative 'ruby'
+require_relative 'matz'
 require 'smalrubot'
 
 module Game
@@ -14,12 +15,14 @@ module Game
             @frm = 1
             @dx = 0
             @button_sensor = ButtonSensor.new(pin: 2)
+            @matz = Matz.new()
         end
 
         def play
             draw
             update
             @button_sensor.update
+            @matz.draw
         end
 
         private
