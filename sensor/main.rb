@@ -10,10 +10,12 @@ board = Smalrubot::Board.new(Smalrubot::TxRx::Serial.new)
 font = Font.new(32)
 
 count = 0
-sensor = board.analog_read(0)
+sensor = 0
 
 Window.loop do
-  count += 1
-  sensor = board.analog_read(0) if count % 60 == 0
+  
+  sensor = board.analog_read(1) if count % 30 == 0
   Window.draw_font(100, 100, sensor.to_s, font)
+  count += 1
+
 end
