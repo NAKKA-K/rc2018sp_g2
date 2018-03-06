@@ -2,14 +2,14 @@ require 'dxruby'
 require_relative 'scene'
 require_relative 'scene_title/director'
 require_relative 'scene_game/director'
+require_relative 'sensors/sensor'
 
-DEBUG = true
+$DEBUG = true
 
 Window.width = 800
 Window.height = 600
 
-# board = Smalrubot::Board.new(Smalrubot::TxTr::Serial.new)
-board = nil
+board = Sensor.board
 
 Scene.add(Title::Director.new(board), :title)
 Scene.add(Game::Director.new(board), :game)
