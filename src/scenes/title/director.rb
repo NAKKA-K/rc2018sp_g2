@@ -1,7 +1,6 @@
 ﻿require_relative '../../sensors/button_sensor'
 
 module Title
-    
     class Director
         def initialize(board)
             @font = Font.new(32, 'MS Pゴシック')
@@ -31,5 +30,4 @@ module Title
             end
         end
     end
-
 end
