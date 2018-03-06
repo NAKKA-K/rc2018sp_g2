@@ -33,9 +33,9 @@ class Matz
         Window.draw_font(700, 400, "#{@@favorability_rate}", @font)
     end
 
-    def receive_present(present_item)
-        @favorability_rate += 
-            case present_item
+    def receive_present(present)
+        @@favorability_rate +=
+            case present
             when :ruby
                 10
             when :python
@@ -50,8 +50,8 @@ class Matz
     # @favorability_rateを元に、statusを変更する
     # @favorability_rateが変更された後に呼び出す
     def update_status
-        @favorability_status = 
-            case @favorability_rate
+        @@favorability_status = 
+            case @@favorability_rate
             when (0..20)
                 'bad'
             when (20..40)
@@ -63,7 +63,11 @@ class Matz
             when (80...100)
                 'wedding'
             else
-                raise '好感度が0未満、もしくは101以上になっています'
+                if @@favorability_rate > 100
+                    @@favorability_rate = 100
+                elsif @@favorability_rate < 0
+                    @@favorability_rate = 0
+                end
             end
     end
 
