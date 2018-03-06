@@ -27,7 +27,7 @@ class Matz
     end
 
     def draw
-        Window.draw(200, 50, @big_matz)
+        Window.draw(25, 30, @big_matz)
         Window.draw(700, 500, @small_matz)
         Window.draw_font(700, 300, "#{@@favorability_status}", @font)
         Window.draw_font(700, 400, "#{@@favorability_rate}", @font)

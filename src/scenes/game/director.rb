@@ -10,7 +10,6 @@ module Game
     class Director
         def initialize(board)
             @board = board
-            @player = Player.new
             @ruby = ::Ruby.new(100,100,"images/python.png")
             @bg = Image.load("images/background.jpg")
             @frm = 1
@@ -18,6 +17,7 @@ module Game
             @button_sensor = ButtonSensor.new(pin: 2)
             @matz = Matz.new()
         end
+
         def play
             draw
             update
@@ -32,11 +32,6 @@ module Game
             @frm += 1
             @frm = 0 if @frm > 30
 
-            @player.x += @dx if Input.key_down?(K_RIGHT)
-            @player.x -= @dx if Input.key_down?(K_LEFT)
-            @player.y -= @dx if Input.key_down?(K_UP)
-            @player.y += @dx if Input.key_down?(K_DOWN)
-
             @ruby.update
             if @button_sensor.down?
                 SceneMgr.move_to(:result)
@@ -45,7 +40,6 @@ module Game
 
         def draw
             Window.draw(0, 0, @bg)
-            @player.draw
             @ruby.draw
         end
     end
