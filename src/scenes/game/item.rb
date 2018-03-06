@@ -1,16 +1,12 @@
 class Item
-    def initialize(x = 0,y = 0)
-        @image_ruby = Image.load('images/ruby.png')
-        @image_ruby.set_color_key(C_WHITE)
-        @image_python = Image.load('images/python.png')
-        @image_python.set_color_key(C_WHITE)
-
+    def initialize(x = 0,y = 300,image)
+        @image = Image.load(image)
         @x = x
         @y = y
+        @dy = 1
     end
-    
+
     def draw
-        Window.draw(250,300,@image_ruby)
-        Window.draw(550,300,@image_python)
+        Window.draw(@x,@y,@image)
     end
 end

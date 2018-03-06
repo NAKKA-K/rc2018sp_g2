@@ -1,5 +1,6 @@
 require_relative 'player'
 require_relative 'item'
+require_relative 'ruby'
 require 'smalrubot'
 
 module Game
@@ -8,7 +9,7 @@ module Game
         def initialize(board)
             @board = board
             @player = Player.new
-            @item = Item.new
+            @ruby = ::Ruby.new(100,100,"images/python.png")
             @frm = 1
             @dx = 0
         end
@@ -29,7 +30,9 @@ module Game
             @player.x -= @dx if Input.key_down?(K_LEFT)
             @player.y -= @dx if Input.key_down?(K_UP)
             @player.y += @dx if Input.key_down?(K_DOWN)
-
+            
+            @ruby.update
+            
             if @board.digital_read(2) != 0
               #  SceneMgr.move_to(:result)
             end
@@ -37,7 +40,7 @@ module Game
 
         def draw
             @player.draw
-            @item.draw
+            @ruby.draw
         end
     end
 
