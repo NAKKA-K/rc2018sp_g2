@@ -2,6 +2,7 @@ require_relative '../../sensors/button_sensor'
 require_relative 'player'
 require_relative 'item'
 require_relative 'ruby'
+require_relative 'python'
 require_relative 'matz'
 require 'smalrubot'
 
@@ -11,6 +12,7 @@ module Game
         def initialize(board)
             @board = board
             @ruby = ::Ruby.new(400,100,"images/ruby.png")
+            @python = ::Python.new(500,100,"images/python.png")
             @bg = Image.load("images/background.jpg")
             @frm = 1
             @dx = 0
@@ -35,7 +37,10 @@ module Game
             @dx = 10 if @frm == 30 # @dxにセンサー等の値を入れる
             @frm += 1
             @frm = 0 if @frm > 30
+            
+            @python.update
             @ruby.update
+            
             if @button_sensor.down?
                 SceneMgr.move_to(:result)
             end
@@ -45,7 +50,7 @@ module Game
             end
 
             if @button_left.down?
-                @matz.receive_present(@ruby.status)
+                @matz.receive_present(@python.status)
             end
         end
 
