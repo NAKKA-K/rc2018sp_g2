@@ -7,7 +7,7 @@ class Player
         @x = x
         @y = y
     end
-
+    
     def draw
         Window.draw(@x, @y, @image)
 

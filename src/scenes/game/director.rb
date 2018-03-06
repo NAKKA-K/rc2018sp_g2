@@ -1,4 +1,5 @@
 require_relative 'player'
+require_relative 'item'
 require 'smalrubot'
 
 module Game
@@ -7,6 +8,7 @@ module Game
         def initialize(board)
             @board = board
             @player = Player.new
+            @item = Item.new
             @frm = 1
             @dx = 0
         end
@@ -29,12 +31,13 @@ module Game
             @player.y += @dx if Input.key_down?(K_DOWN)
 
             if @board.digital_read(2) != 0
-                SceneMgr.move_to(:result)
+              #  SceneMgr.move_to(:result)
             end
         end
 
         def draw
             @player.draw
+            @item.draw
         end
     end
 
