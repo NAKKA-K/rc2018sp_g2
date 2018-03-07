@@ -5,19 +5,21 @@ module Credit
         def initialize(board)
             @font = Font.new(32, 'MS Pゴシック')
             @board = board
-            @button_sensor = ButtonSensor.new(pin: 2)
+            @button_right = ButtonSensor.new(pin: 6)
+            @button_left = ButtonSensor.new(pin: 8)
         end
 
         def play
             draw
             update
-            @button_sensor.update
+            @button_right.update
+            @button_left.update
         end
 
         private
 
         def update
-            if @button_sensor.down?
+            if $DEBUG && (@button_right.down? || @button_left.down?)
                 SceneMgr.move_to(:title)
             end
         end
