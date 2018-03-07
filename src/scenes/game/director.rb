@@ -1,3 +1,4 @@
+require_relative '../../config'
 require_relative '../../sensors/button_sensor'
 require_relative 'player'
 require_relative 'item'
@@ -13,19 +14,20 @@ end
 def update_image(x,image_random_seed)
     case image_random_seed
     when 0 then
-        ::Ruby.new(x,100,"images/ruby.png")
+        ::Ruby.new(x,100,"#{$ROOT_PATH}/images/ruby.png")
     when 1 then
-        ::Python.new(x,100,"images/python.png")
+        ::Python.new(x,100,"#{$ROOT_PATH}/images/python.png")
     end
 end
 
 module Game
     class Director
         def initialize(board)
-            @board = board
-            @item_right = ::Ruby.new(400,100,"images/ruby.png")
-            @item_left = ::Python.new(600,100,"images/python.png")
-            @bg = Image.load("images/background.jpg")
+          @board = board
+          p "#{$ROOT_PATH}/images/ruby.png"
+            @item_right = ::Ruby.new(400,100,"#{$ROOT_PATH}/images/ruby.png")
+            @item_left = ::Python.new(600,100,"#{$ROOT_PATH}/images/python.png")
+            @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
             @frm = 1
             @dx = 0
             @time_frame = 0
@@ -65,7 +67,7 @@ module Game
             if @button_sensor.down?
                 SceneMgr.move_to(:result)
             end
-            
+
             if $DEBUG && @button_sensor.down?
                 #SceneMgr.move_to(:result)
             end
