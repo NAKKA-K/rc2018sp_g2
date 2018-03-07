@@ -91,17 +91,16 @@ module Game
                 SceneMgr.move_to(:result)
                 @timer.reset
             end
-            puts "hasdaivna"
-            puts @item_right.class.status
+            
             if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
                 if check_add_point(@item_right.y,@item_right.height)
-                    @matz.receive_present(@item_right.status)
+                    @matz.receive_present(@item_right.class.status)
                 end
             end
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
                 if check_add_point(@item_left.y,@item_left.height)
-                    @matz.receive_present(@item_left.status)
+                    @matz.receive_present(@item_left.class.status)
                 end
             end
         end
