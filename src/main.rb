@@ -1,6 +1,5 @@
 require 'dxruby'
 require_relative './config'
-require_relative './music'
 require_relative 'scene_mgr'
 require_relative 'scenes/title/director'
 require_relative 'scenes/game/director'
