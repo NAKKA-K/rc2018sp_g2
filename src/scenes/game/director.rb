@@ -108,7 +108,7 @@ module Game
                 end
             end
 
-            if $DEBUG && @leng_sensor.down?(ButtonSensor::LEFT_PIN)
+            if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
                 if check_add_point(@item_left.y,@item_left.height)
                     @matz.receive_present(@item_left.class.status)
                 end
