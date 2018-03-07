@@ -45,8 +45,8 @@ module Game
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
-            @item_right = [::Ruby.new(299,0,"#{$ROOT_PATH}/images/ruby_notes.png")]	
-            @item_left = [::Python.new(401,0,"#{$ROOT_PATH}/images/python_notes.png")]
+            @item_right = [::Ruby.new(401,0,"#{$ROOT_PATH}/images/ruby_notes.png")]	
+            @item_left = [::Python.new(299,0,"#{$ROOT_PATH}/images/python_notes.png")]
             @lane_right = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
             @lane_center =  Image.new(2,600,[255,255,255])
             @lane_left = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
@@ -96,6 +96,18 @@ module Game
                 @item_left << update_image(299,@image_random_seed.rand(100))
                 @item_right << update_image(401,@image_random_seed.rand(100))
             end
+            # 下まで来たときに配列削除
+            @item_right.each do |item|
+                if item.y > 600
+                    @item_right.delete_at(0)
+                end
+            end
+            @item_left.each do |item|
+                if item.y > 600
+                    @item_left.delete_at(0)
+                end
+            end
+
 
             if $DEBUG && @timer.stop?
                 SceneMgr.move_to(:result)
