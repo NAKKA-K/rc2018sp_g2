@@ -1,5 +1,8 @@
 ﻿require_relative '../../sensors/button_sensor'
 require_relative '../../sensors/leng_sensor'
+require_relative '../game/matz'
+require_relative '../../config'
+
 module Result
     
     class Director
@@ -7,6 +10,8 @@ module Result
             @font = Font.new(32, 'MS Pゴシック')
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
+            @big_matz = Image.load("#{$ROOT_PATH}/images/big_matz.jpeg")
+            @backimg = Image.load("#{$ROOT_PATH}/images/backgrand.bmp")
         end
 
         def play
@@ -33,7 +38,11 @@ module Result
         end
 
         def draw
-            Window.draw_font(250, 280, "結果画面", @font)
+            Window.draw(0, 0, @backimg)
+            Window.draw_font(350, 50, "結果画面", @font, color: [0,0,0])
+            Window.draw(25, 100, @big_matz)
+            Window.draw_font(550, 250, "恋の行方: #{Matz.favorability_status}", @font, color: [0,0,0])
+            Window.draw_font(550, 400, "好感度: #{Matz.favorability_rate}", @font, color: [0,0,0])
         end
     end
 
