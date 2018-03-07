@@ -1,5 +1,6 @@
 require_relative '../../config'
 require_relative '../../sensors/button_sensor'
+require_relative '../../sensors/leng_sensor'
 require_relative 'player'
 require_relative 'item'
 require_relative 'ruby'
@@ -33,7 +34,8 @@ end
 module Game
     class Director
         def initialize()
-            @button_sensor = ButtonSensor.instance()
+            @button_sensor = ButtonSensor.instance
+            @leng_sensor = LengSensor.instance
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
             @item_right = ::Ruby.new(400,100,"#{$ROOT_PATH}/images/ruby.png")
             @item_left = ::Python.new(600,100,"#{$ROOT_PATH}/images/python.png")
@@ -57,6 +59,8 @@ module Game
             draw
             @button_sensor.update(ButtonSensor::LEFT_PIN)
             @button_sensor.update(ButtonSensor::RIGHT_PIN)
+            @leng_sensor.update(LengSensor::LEFT_PIN)
+            @leng_sensor.update(LengSensor::RIGHT_PIN)
             @item_right.update
             @item_left.update
             update
@@ -82,9 +86,13 @@ module Game
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
                 @matz.receive_present(@item_right.status)
+            elsif @leng_sensor.down?(LengSensor::RIGHT_PIN)
+                @matz.receive_present(@item_right.status)
             end
 
-            if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
+            if $DEBUG && @leng_sensor.down?(ButtonSensor::LEFT_PIN)
+                @matz.receive_present(@item_left.status)
+            elsif @leng_sensor.down?(LengSensor::LEFT_PIN)
                 @matz.receive_present(@item_left.status)
             end
         end
