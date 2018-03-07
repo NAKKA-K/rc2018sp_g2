@@ -20,11 +20,7 @@ SceneMgr.add(Credit::Director.new(), :credit)
 
 SceneMgr.move_to(:title)
 
-count = 0
-
 Window.loop do
     break if Input.key_push?(K_ESCAPE)
-    $correct.play if count % 120 == 0
     SceneMgr.play
-    count += 1
 end
