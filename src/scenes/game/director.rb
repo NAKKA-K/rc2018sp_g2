@@ -33,6 +33,8 @@ module Game
         def initialize()
             @button_sensor = ButtonSensor.instance()
             @bg = Image.load("images/background.jpg")
+            @item_right = ::Ruby.new(400,100,"images/ruby.png")	
+            @item_left = ::Python.new(600,100,"images/python.png")
             @frm = 1
             @dx = 0
             @time_frame = 0
@@ -62,10 +64,6 @@ module Game
                 @item_right = update_image(600,@image_random_seed.rand(@item_num))
             end
 
-            if $DEBUG && @button_sensor.down?(ButtonSensor::DEBUG_ENTER_PIN)
-                SceneMgr.move_to(:result)
-            end
-            
             if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) || 
                           @button_sensor.down?(ButtonSensor::RIGHT_PIN))
                 #SceneMgr.move_to(:result)
