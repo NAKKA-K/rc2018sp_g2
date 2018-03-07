@@ -29,8 +29,8 @@ def update_image(x,image_random_seed)
     end
 end
 
-def check_add_point(item_center)
-    if 0 <= item_center && item_center <= 100
+def check_add_point(item_center,height)
+    if 450- (height / 2) <= item_center && item_center <= 600 - (height / 2)
         true
     else
         false
@@ -72,7 +72,7 @@ module Game
             @frm += 1
             @frm = 0 if @frm > 30
             @time_frame = update_time(@time_frame)
-            if(@time_frame % 240 == 0)
+            if(@time_frame % 300 == 0)
                 @item_left = update_image(299,@image_random_seed.rand(@item_num))
                 @item_right = update_image(401,@image_random_seed.rand(@item_num))
             end
@@ -83,13 +83,13 @@ module Game
             end
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
-                if check_add_point(@item_right.y)
+                if check_add_point(@item_right.y,@item_right.height)
                     @matz.receive_present(@item_right.status)
                 end
             end
-            puts @item_right.y
+
             if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
-                if check_add_point(@item_right.y)
+                if check_add_point(@item_left.y,@item_left.height)
                     @matz.receive_present(@item_left.status)
                 end
             end
