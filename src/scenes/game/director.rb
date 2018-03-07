@@ -17,17 +17,18 @@ def update_time(time_frame)
 end
 
 def update_image(x,image_random_seed)
+    puts image_random_seed
     case image_random_seed
-    when 0 then
+    when (0..30) then
         ::Ruby.new(x,0,"#{$ROOT_PATH}/images/ruby_notes.png")
-    when 1 then
-        ::Python.new(x,0,"#{$ROOT_PATH}/images/python_notes.png")
-    when 2 then
+    when (30..60) then
         ::Castle.new(x,0,"#{$ROOT_PATH}/images/castle_notes.jpg")
-    when 3 then
-        ::Cookie.new(x,0,"#{$ROOT_PATH}/images/cookie_notes.png")
-    when 4 then
+    when (60..80) then
+        ::Python.new(x,0,"#{$ROOT_PATH}/images/python_notes.png")
+    when (80..90) then
         ::Bomb.new(x,0,"#{$ROOT_PATH}/images/bomb_notes.png")
+    when (90..100) then
+        ::Cookie.new(x,0,"#{$ROOT_PATH}/images/cookie_notes.png")
     end
 end
 
@@ -54,7 +55,6 @@ module Game
             @dx = 0
             @dy = 1
             @time_frame = 0
-            @item_num = 5
             @image_random_seed = Random.new
             @matz = Matz.new()
             @timer = GameTimer.new()
@@ -89,8 +89,8 @@ module Game
             @frm = 0 if @frm > 30
             @time_frame = update_time(@time_frame)
             if(@time_frame % 300 == 0)
-                @item_left = update_image(299,@image_random_seed.rand(@item_num))
-                @item_right = update_image(401,@image_random_seed.rand(@item_num))
+                @item_left = update_image(299,@image_random_seed.rand(100))
+                @item_right = update_image(401,@image_random_seed.rand(100))
             end
 
             if $DEBUG && @timer.stop?
