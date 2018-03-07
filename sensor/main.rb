@@ -14,7 +14,8 @@ sensor = 0
 
 Window.loop do
   
-  sensor = board.analog_read(1) if count % 30 == 0
+  sensor = board.analog_read(1) # 左側のセンサー
+  p 'OK' if sensor > 150
   Window.draw_font(100, 100, sensor.to_s, font)
   count += 1
 
