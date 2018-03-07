@@ -1,4 +1,5 @@
 class Item
+    attr_reader :y
     def initialize(x = 0,y = 300,image)
         @image = Image.load(image)
         @x = x
