@@ -35,6 +35,8 @@ module Game
             @bg = Image.load("images/background.jpg")
             @item_right = ::Ruby.new(400,100,"images/ruby.png")	
             @item_left = ::Python.new(600,100,"images/python.png")
+            @lane_right = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
+            @lane_left = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
             @frm = 1
             @dx = 0
             @time_frame = 0
@@ -80,9 +82,11 @@ module Game
 
         def draw
             Window.draw(0, 0, @bg)
-            @item_right.draw
-            @item_left.draw
-            @matz.draw
+            Window.draw(300, 0, @lane_left)
+            Window.draw(400, 0, @lane_right)
+            #@item_right.draw
+            #@item_left.draw
+            #@matz.draw
         end
     end
 end
