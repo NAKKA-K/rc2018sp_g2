@@ -1,22 +1,22 @@
 require_relative 'board'
 require 'singleton'
 
-class ButtonSensor
+class LengSensor
     include Singleton
     extend Board
 
-    LEFT_PIN = 6
-    RIGHT_PIN = 8
+    LEFT_PIN = 1
+    RIGHT_PIN = 3
 
     attr_reader :key_process, :raw_value
 
     def initialize()
-        @raw_value = Array.new(9) {0}
-        @key_process = Array.new(9) {0}
+        @raw_value = Array.new(4) {0}
+        @key_process = Array.new(4) {0}
     end
 
     def update(pin)
-        @raw_value[pin] = Board.board.digital_read(pin)
+        @raw_value[pin] = Board.board.analog_read(pin)
         if on?(pin)
             @key_process[pin] += 1
         else
@@ -31,11 +31,10 @@ class ButtonSensor
 
     # true,falseでのみ返す
     def on?(pin)
-        if @raw_value[pin] == 1
+        if @raw_value[pin] >= 150
             true
         else
             false
         end
     end
-
 end

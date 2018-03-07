@@ -1,30 +1,35 @@
 ﻿require_relative '../../sensors/button_sensor'
+require_relative '../../sensors/leng_sensor'
 
 module Title
     class Director
-        def initialize(board)
-            @font = Font.new(64, 'MS Pゴシック')
-            @board = board
-            @button_right = ButtonSensor.new(pin: 6)
-            @button_left = ButtonSensor.new(pin: 8)
-	    @image = Image.load('images/title.png')
+        def initialize()
+            @font = Font.new(32, 'MS Pゴシック')
+            @button_sensor = ButtonSensor.instance
+            @leng_sensor = LengSensor.instance
+ 	    @image = Image.load('images/title.png')
 	    @backimg = Image.load('images/backimg.bmp')
-        end
+	end
 
         def play
             draw
-            @button_right.update
-            @button_left.update
             if $DEBUG
-                p @button_left.key_process
+                @button_sensor.update(ButtonSensor::LEFT_PIN)
+                @button_sensor.update(ButtonSensor::RIGHT_PIN)
             end
+            @leng_sensor.update(LengSensor::LEFT_PIN)
+            @leng_sensor.update(LengSensor::RIGHT_PIN)
             update
         end
 
         private
 
         def update
-            if $DEBUG && (@button_right.down? || @button_left.down?)
+            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) || 
+                          @button_sensor.down?(ButtonSensor::RIGHT_PIN))
+                SceneMgr.move_to(:game)
+            elsif @leng_sensor.down?(LengSensor::RIGHT_PIN) ||
+                  @leng_sensor.down?(LengSensor::LEFT_PIN)
                 SceneMgr.move_to(:game)
             end
         end
