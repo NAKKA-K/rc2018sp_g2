@@ -33,9 +33,10 @@ module Game
         def initialize()
             @button_sensor = ButtonSensor.instance()
             @bg = Image.load("images/background.jpg")
-            @item_right = ::Ruby.new(400,100,"images/ruby.png")	
-            @item_left = ::Python.new(600,100,"images/python.png")
+            @item_right = ::Ruby.new(299,100,"images/ruby.png")	
+            @item_left = ::Python.new(401,100,"images/python.png")
             @lane_right = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
+            @lane_center =  Image.new(2,600,[255,255,255])
             @lane_left = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
             @frm = 1
             @dx = 0
@@ -62,8 +63,8 @@ module Game
             @frm = 0 if @frm > 30
             @time_frame = update_time(@time_frame)
             if(@time_frame % 90 == 0)
-                @item_left = update_image(400,@image_random_seed.rand(@item_num))
-                @item_right = update_image(600,@image_random_seed.rand(@item_num))
+                @item_left = update_image(299,@image_random_seed.rand(@item_num))
+                @item_right = update_image(401,@image_random_seed.rand(@item_num))
             end
 
             if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) || 
@@ -82,10 +83,11 @@ module Game
 
         def draw
             Window.draw(0, 0, @bg)
-            Window.draw(300, 0, @lane_left)
-            Window.draw(400, 0, @lane_right)
-            #@item_right.draw
-            #@item_left.draw
+            Window.draw(299, 0, @lane_left)
+            Window.draw(399, 0, @lane_center)
+            Window.draw(401, 0, @lane_right)
+            @item_right.draw
+            @item_left.draw
             #@matz.draw
         end
     end
