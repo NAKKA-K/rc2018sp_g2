@@ -5,29 +5,30 @@ module Title
         def initialize(board)
             @font = Font.new(32, 'MS Pゴシック')
             @board = board
-            @button_sensor = ButtonSensor.new(pin: 2)
+            @button_right = ButtonSensor.new(pin: 6)
+            @button_left = ButtonSensor.new(pin: 8)
         end
 
         def play
             draw
+            @button_right.update
+            @button_left.update
+            if $DEBUG
+                p @button_left.key_process
+            end
             update
-            @button_sensor.update
         end
 
         private
 
         def update
-            if @button_sensor.down?
+            if $DEBUG && (@button_right.down? || @button_left.down?)
                 SceneMgr.move_to(:game)
             end
         end
 
         def draw
             Window.draw_font(250, 280, "タイトル画面", @font)
-
-            if $DEBUG
-                p @button_sensor.raw_value
-            end
         end
     end
 end

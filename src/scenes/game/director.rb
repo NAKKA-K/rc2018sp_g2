@@ -39,13 +39,15 @@ module Game
 
         def play
             draw
-            update
             @button_sensor.update
             @button_right.update
             @button_left.update
             @item_right.update
             @item_left.update
-            @matz.draw
+            if $DEBUG
+                p @button_left.key_process
+            end
+            update
         end
 
         private
@@ -54,7 +56,6 @@ module Game
             @dx = 10 if @frm == 30 # @dxにセンサー等の値を入れる
             @frm += 1
             @frm = 0 if @frm > 30
-
             @time_frame = update_time(@time_frame)
             if(@time_frame % 180 == 0)
                 @item_left = update_image(400,@image_random_seed.rand(@item_num))
@@ -63,6 +64,10 @@ module Game
 
             if @button_sensor.down?
                 SceneMgr.move_to(:result)
+            end
+            
+            if $DEBUG && @button_sensor.down?
+                #SceneMgr.move_to(:result)
             end
 
             if @button_right.down?
@@ -78,6 +83,7 @@ module Game
             Window.draw(0, 0, @bg)
             @item_right.draw
             @item_left.draw
+            @matz.draw
         end
     end
 end
