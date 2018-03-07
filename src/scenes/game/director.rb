@@ -24,10 +24,13 @@ module Game
 
         def play
             draw
-            update
             @button_sensor.update
             @button_right.update
             @button_left.update
+            if $DEBUG
+                p @button_left.key_process
+            end
+            update
         end
 
         private

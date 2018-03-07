@@ -11,9 +11,9 @@ module Result
 
         def play
             draw
-            update
             @button_right.update
             @button_left.update
+            update
         end
 
         private

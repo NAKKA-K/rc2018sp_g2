@@ -11,9 +11,12 @@ module Title
 
         def play
             draw
-            update
             @button_right.update
             @button_left.update
+            if $DEBUG
+                p @button_left.key_process
+            end
+            update
         end
 
         private
@@ -26,10 +29,6 @@ module Title
 
         def draw
             Window.draw_font(250, 280, "タイトル画面", @font)
-
-            if $DEBUG
-                p @button_right.raw_value + @button_left.raw_value
-            end
         end
     end
 end
