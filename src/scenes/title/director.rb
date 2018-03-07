@@ -36,8 +36,8 @@ module Title
         end
 
         def draw
-	    Window.draw(0, 0, @backimg)
-	    Window.draw(230, 160, @image)
+            Window.draw(0, 0, @backimg)
+            Window.draw(230, 160, @image)
         end
     end
 end
