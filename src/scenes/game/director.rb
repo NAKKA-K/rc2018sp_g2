@@ -6,13 +6,11 @@ require_relative 'python'
 require_relative 'matz'
 require 'smalrubot'
 
-def time_update(time_frame)
+def update_time(time_frame)
     time_frame += 1
 end
 
 def update_image(x,image_random_seed)
-    puts image_random_seed
-    puts x
     case image_random_seed
     when 0 then
         ::Ruby.new(x,100,"images/ruby.png")
@@ -31,6 +29,7 @@ module Game
             @frm = 1
             @dx = 0
             @time_frame = 0
+            @item_num = 2
             @image_random_seed = Random.new
             @button_sensor = ButtonSensor.new(pin: 2)
             #@button_right = ButtonSensor.new(pin: 6)
@@ -56,9 +55,8 @@ module Game
             @frm += 1
             @frm = 0 if @frm > 30
 
-            update_image(@time_frame)
+            @time_frame = update_time(@time_frame)
             if(@time_frame % 180 == 0)
-                @frm_second = 0
                 @item_left = update_image(400,@image_random_seed.rand(@item_num))
                 @item_right = update_image(600,@image_random_seed.rand(@item_num))
             end
