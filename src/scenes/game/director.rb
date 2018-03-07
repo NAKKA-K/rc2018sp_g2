@@ -9,27 +9,20 @@ require 'smalrubot'
 module Game
 
     class Director
-        def initialize(board)
-            @board = board
+        def initialize()
             @ruby = ::Ruby.new(400,100,"images/ruby.png")
             @python = ::Python.new(500,100,"images/python.png")
             @bg = Image.load("images/background.jpg")
             @frm = 1
             @dx = 0
-            @button_sensor = ButtonSensor.new(pin: 2)
-            @button_right = ButtonSensor.new(pin: 6)
-            @button_left = ButtonSensor.new(pin: 8)
+            @button_sensor = ButtonSensor.instance()
             @matz = Matz.new()
         end
 
         def play
             draw
-            @button_sensor.update
-            @button_right.update
-            @button_left.update
-            if $DEBUG
-                p @button_left.key_process
-            end
+            @button_sensor.update(ButtonSensor::LEFT_PIN)
+            @button_sensor.update(ButtonSensor::RIGHT_PIN)
             update
         end
 
@@ -43,15 +36,16 @@ module Game
             @python.update
             @ruby.update
             
-            if $DEBUG && @button_sensor.down?
+            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) || 
+                          @button_sensor.down?(ButtonSensor::RIGHT_PIN))
                 #SceneMgr.move_to(:result)
             end
 
-            if @button_right.down?
+            if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
                 @matz.receive_present(@ruby.status)
             end
 
-            if @button_left.down?
+            if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
                 @matz.receive_present(@python.status)
             end
         end
