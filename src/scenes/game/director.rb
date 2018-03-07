@@ -81,7 +81,8 @@ module Game
                           @button_sensor.down?(ButtonSensor::RIGHT_PIN))
                 #SceneMgr.move_to(:result)
             end
-
+            puts "hasdaivna"
+            puts @item_right.class.status
             if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
                 if check_add_point(@item_right.y,@item_right.height)
                     @matz.receive_present(@item_right.status)
