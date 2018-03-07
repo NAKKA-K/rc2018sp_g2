@@ -30,9 +30,15 @@ class Matz
         @@favorability_rate +=
             case present
             when :ruby
+                30
+            when :castle
                 10
             when :python
                 -10
+            when :bomb
+                -20
+            when :cookie
+                -100 
             end
 
         update_status

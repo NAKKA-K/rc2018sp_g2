@@ -4,6 +4,9 @@ require_relative 'player'
 require_relative 'item'
 require_relative 'ruby'
 require_relative 'python'
+require_relative 'castle'
+require_relative 'bomb'
+require_relative 'cookie'
 require_relative 'matz'
 require 'smalrubot'
 
@@ -17,38 +20,36 @@ def update_image(x,image_random_seed)
         ::Ruby.new(x,100,"#{$ROOT_PATH}/images/ruby.png")
     when 1 then
         ::Python.new(x,100,"#{$ROOT_PATH}/images/python.png")
+    when 2 then
+        ::Castle.new(x,100,"#{$ROOT_PATH}/images/castle.jpg")
+    when 3 then
+        ::Cookie.new(x,100,"#{$ROOT_PATH}/images/cookie.png")
+    when 4 then
+        ::Bomb.new(x,100,"#{$ROOT_PATH}/images/bomb.png")
     end
 end
 
 module Game
     class Director
-        def initialize(board)
-          @board = board
-          p "#{$ROOT_PATH}/images/ruby.png"
+        def initialize()
+            @button_sensor = ButtonSensor.instance()
+            @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
             @item_right = ::Ruby.new(400,100,"#{$ROOT_PATH}/images/ruby.png")
             @item_left = ::Python.new(600,100,"#{$ROOT_PATH}/images/python.png")
-            @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
             @frm = 1
             @dx = 0
             @time_frame = 0
-            @item_num = 2
+            @item_num = 5
             @image_random_seed = Random.new
-            @button_sensor = ButtonSensor.new(pin: 2)
-            @button_right = ButtonSensor.new(pin: 6)
-            @button_left = ButtonSensor.new(pin: 8)
             @matz = Matz.new()
         end
 
         def play
             draw
-            @button_sensor.update
-            @button_right.update
-            @button_left.update
+            @button_sensor.update(ButtonSensor::LEFT_PIN)
+            @button_sensor.update(ButtonSensor::RIGHT_PIN)
             @item_right.update
             @item_left.update
-            if $DEBUG
-                p @button_left.key_process
-            end
             update
         end
 
@@ -59,24 +60,21 @@ module Game
             @frm += 1
             @frm = 0 if @frm > 30
             @time_frame = update_time(@time_frame)
-            if(@time_frame % 180 == 0)
+            if(@time_frame % 90 == 0)
                 @item_left = update_image(400,@image_random_seed.rand(@item_num))
                 @item_right = update_image(600,@image_random_seed.rand(@item_num))
             end
 
-            if @button_sensor.down?
-                SceneMgr.move_to(:result)
-            end
-
-            if $DEBUG && @button_sensor.down?
+            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) ||
+                          @button_sensor.down?(ButtonSensor::RIGHT_PIN))
                 #SceneMgr.move_to(:result)
             end
 
-            if @button_right.down?
+            if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
                 @matz.receive_present(@item_right.status)
             end
 
-            if @button_left.down?
+            if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
                 @matz.receive_present(@item_left.status)
             end
         end
