@@ -6,17 +6,32 @@ require_relative 'python'
 require_relative 'matz'
 require 'smalrubot'
 
-module Game
+def time_update(time_frame)
+    time_frame += 1
+end
 
+def update_image(x,image_random_seed)
+    puts image_random_seed
+    puts x
+    case image_random_seed
+    when 0 then
+        ::Ruby.new(x,100,"images/ruby.png")
+    when 1 then
+        ::Python.new(x,100,"images/python.png")
+    end
+end
+
+module Game
     class Director
         def initialize(board)
             @board = board
-            #@ruby = ::Ruby.new(400,100,"images/ruby.png")
-            #@python = ::Python.new(600,100,"images/python.png")
-            @items = [::Ruby.new(400,100,"images/ruby.png"),::Python.new(400,100,"images/ruby.png")]
+            @item_right = ::Ruby.new(400,100,"images/ruby.png")
+            @item_left = ::Python.new(600,100,"images/python.png")
             @bg = Image.load("images/background.jpg")
             @frm = 1
             @dx = 0
+            @time_frame = 0
+            @image_random_seed = Random.new
             @button_sensor = ButtonSensor.new(pin: 2)
             #@button_right = ButtonSensor.new(pin: 6)
             #@button_left = ButtonSensor.new(pin: 8)
@@ -29,22 +44,25 @@ module Game
             @button_sensor.update
             #@button_right.update
             #@button_left.update
-            @items[0].update
-            @items[1].update
+            @item_right.update
+            @item_left.update
             @matz.draw
         end
 
         private
 
         def update
-=begin
             @dx = 10 if @frm == 30 # @dxにセンサー等の値を入れる
             @frm += 1
             @frm = 0 if @frm > 30
-=end
-            #@python.update
-            #@ruby.update
-            
+
+            update_image(@time_frame)
+            if(@time_frame % 180 == 0)
+                @frm_second = 0
+                @item_left = update_image(400,@image_random_seed.rand(@item_num))
+                @item_right = update_image(600,@image_random_seed.rand(@item_num))
+            end
+
             if @button_sensor.down?
                 SceneMgr.move_to(:result)
             end
@@ -61,10 +79,8 @@ module Game
 
         def draw
             Window.draw(0, 0, @bg)
-            #@ruby.draw
-            #@python.draw
-            @items[0].draw
-            @items[1].draw
+            @item_right.draw
+            @item_left.draw
         end
     end
 end
