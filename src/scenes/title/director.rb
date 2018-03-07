@@ -2,27 +2,23 @@
 
 module Title
     class Director
-        def initialize(board)
+        def initialize()
             @font = Font.new(32, 'MS Pゴシック')
-            @board = board
-            @button_right = ButtonSensor.new(pin: 6)
-            @button_left = ButtonSensor.new(pin: 8)
+            @button_sensor = ButtonSensor.instance
         end
 
         def play
             draw
-            @button_right.update
-            @button_left.update
-            if $DEBUG
-                p @button_left.key_process
-            end
+            @button_sensor.update(ButtonSensor::LEFT_PIN)
+            @button_sensor.update(ButtonSensor::RIGHT_PIN)
             update
         end
 
         private
 
         def update
-            if $DEBUG && (@button_right.down? || @button_left.down?)
+            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) || 
+                          @button_sensor.down?(ButtonSensor::RIGHT_PIN))
                 SceneMgr.move_to(:game)
             end
         end

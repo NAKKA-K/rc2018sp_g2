@@ -30,32 +30,23 @@ end
 
 module Game
     class Director
-        def initialize(board)
-            @board = board
-            @item_right = ::Ruby.new(400,100,"images/ruby.png")
-            @item_left = ::Python.new(600,100,"images/python.png")
+        def initialize()
+            @button_sensor = ButtonSensor.instance()
             @bg = Image.load("images/background.jpg")
             @frm = 1
             @dx = 0
             @time_frame = 0
             @item_num = 5
             @image_random_seed = Random.new
-            @button_sensor = ButtonSensor.new(pin: 2)
-            @button_right = ButtonSensor.new(pin: 6)
-            @button_left = ButtonSensor.new(pin: 8)
             @matz = Matz.new()
         end
 
         def play
             draw
-            @button_sensor.update
-            @button_right.update
-            @button_left.update
+            @button_sensor.update(ButtonSensor::LEFT_PIN)
+            @button_sensor.update(ButtonSensor::RIGHT_PIN)
             @item_right.update
             @item_left.update
-            if $DEBUG
-                p @button_left.key_process
-            end
             update
         end
 
@@ -71,19 +62,20 @@ module Game
                 @item_right = update_image(600,@image_random_seed.rand(@item_num))
             end
 
-            if @button_sensor.down?
+            if $DEBUG && @button_sensor.down?(ButtonSensor::DEBUG_ENTER_PIN)
                 SceneMgr.move_to(:result)
             end
             
-            if $DEBUG && @button_sensor.down?
+            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) || 
+                          @button_sensor.down?(ButtonSensor::RIGHT_PIN))
                 #SceneMgr.move_to(:result)
             end
 
-            if @button_right.down?
+            if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
                 @matz.receive_present(@item_right.status)
             end
 
-            if @button_left.down?
+            if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
                 @matz.receive_present(@item_left.status)
             end
         end

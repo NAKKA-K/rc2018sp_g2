@@ -2,34 +2,29 @@
 module Credit
     
     class Director
-        def initialize(board)
+        def initialize()
             @font = Font.new(32, 'MS Pゴシック')
-            @board = board
-            @button_right = ButtonSensor.new(pin: 6)
-            @button_left = ButtonSensor.new(pin: 8)
+            @button_sensor = ButtonSensor.instance
         end
 
         def play
             draw
-            @button_right.update
-            @button_left.update
+            @button_sensor.update(ButtonSensor::LEFT_PIN)
+            @button_sensor.update(ButtonSensor::RIGHT_PIN)
             update
         end
 
         private
 
         def update
-            if $DEBUG && (@button_right.down? || @button_left.down?)
+            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) || 
+                          @button_sensor.down?(ButtonSensor::RIGHT_PIN))
                 SceneMgr.move_to(:title)
             end
         end
 
         def draw
             Window.draw_font(250, 280, "credit画面", @font)
-
-            if $DEBUG
-                p @board.digital_read(2)
-            end
         end
     end
 

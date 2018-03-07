@@ -4,19 +4,17 @@ require_relative 'scenes/title/director'
 require_relative 'scenes/game/director'
 require_relative 'scenes/result/director'
 require_relative 'scenes/credit/director'
-require_relative 'sensors/sensor'
+require_relative 'sensors/board'
 
 $DEBUG = true
 
 Window.width = 800
 Window.height = 600
 
-board = Sensor.board
-
-SceneMgr.add(Title::Director.new(board), :title)
-SceneMgr.add(Game::Director.new(board), :game)
-SceneMgr.add(Result::Director.new(board), :result)
-SceneMgr.add(Credit::Director.new(board), :credit)
+SceneMgr.add(Title::Director.new(), :title)
+SceneMgr.add(Game::Director.new(), :game)
+SceneMgr.add(Result::Director.new(), :result)
+SceneMgr.add(Credit::Director.new(), :credit)
 
 SceneMgr.move_to(:title)
 
