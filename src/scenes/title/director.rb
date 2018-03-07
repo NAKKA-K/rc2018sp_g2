@@ -1,4 +1,5 @@
-﻿require_relative '../../sensors/button_sensor'
+﻿require_relative '../../config'
+require_relative '../../sensors/button_sensor'
 require_relative '../../sensors/leng_sensor'
 
 module Title
@@ -7,8 +8,8 @@ module Title
             @font = Font.new(32, 'MS Pゴシック')
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
- 	    @image = Image.load('images/title.png')
-	    @backimg = Image.load('images/backimg.bmp')
+ 	    @image = Image.load("#{$ROOT_PATH}/images/title.png")
+	    @backimg = Image.load("#{$ROOT_PATH}/images/backimg.bmp")
 	end
 
         def play
@@ -25,7 +26,7 @@ module Title
         private
 
         def update
-            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) || 
+            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) ||
                           @button_sensor.down?(ButtonSensor::RIGHT_PIN))
                 SceneMgr.move_to(:game)
             elsif @leng_sensor.down?(LengSensor::RIGHT_PIN) ||
