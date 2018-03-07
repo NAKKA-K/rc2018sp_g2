@@ -57,8 +57,10 @@ module Game
             end
 
             draw
-            @button_sensor.update(ButtonSensor::LEFT_PIN)
-            @button_sensor.update(ButtonSensor::RIGHT_PIN)
+            if $DEBUG
+                @button_sensor.update(ButtonSensor::LEFT_PIN)
+                @button_sensor.update(ButtonSensor::RIGHT_PIN)
+            end
             @leng_sensor.update(LengSensor::LEFT_PIN)
             @leng_sensor.update(LengSensor::RIGHT_PIN)
             @item_right.update
