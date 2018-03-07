@@ -33,9 +33,9 @@ module Game
     class Director
         def initialize()
             @button_sensor = ButtonSensor.instance()
-            @bg = Image.load("#{$ROOT_PATH}/background.jpg")
-            @item_right = ::Ruby.new(299,100,"#{$ROOT_PATH}/ruby.png")	
-            @item_left = ::Python.new(401,100,"#{$ROOT_PATH}/python.png")
+            @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
+            @item_right = ::Ruby.new(299,100,"#{$ROOT_PATH}/images/ruby.png")	
+            @item_left = ::Python.new(401,100,"#{$ROOT_PATH}/images/python.png")
             @lane_right = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
             @lane_center =  Image.new(2,600,[255,255,255])
             @lane_left = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
