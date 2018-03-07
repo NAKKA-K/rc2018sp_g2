@@ -17,7 +17,6 @@ def update_time(time_frame)
 end
 
 def update_image(x,image_random_seed)
-    puts image_random_seed
     case image_random_seed
     when (0..30) then
         ::Ruby.new(x,0,"#{$ROOT_PATH}/images/ruby_notes.png")
@@ -46,8 +45,8 @@ module Game
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
-            @item_right = ::Ruby.new(299,0,"#{$ROOT_PATH}/images/ruby_notes.png")	
-            @item_left = ::Python.new(401,0,"#{$ROOT_PATH}/images/python_notes.png")
+            @item_right = [::Ruby.new(299,0,"#{$ROOT_PATH}/images/ruby_notes.png")]	
+            @item_left = [::Python.new(401,0,"#{$ROOT_PATH}/images/python_notes.png")]
             @lane_right = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
             @lane_center =  Image.new(2,600,[255,255,255])
             @lane_left = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
@@ -75,8 +74,12 @@ module Game
             end
             @leng_sensor.update(LengSensor::LEFT_PIN)
             @leng_sensor.update(LengSensor::RIGHT_PIN)
-            @item_right.update
-            @item_left.update
+            @item_right.each do |item|
+                item.update
+            end
+            @item_left.each do |item|
+                item.update
+            end
             update
             @timer.update
         end
@@ -88,9 +91,10 @@ module Game
             @frm += 1
             @frm = 0 if @frm > 30
             @time_frame = update_time(@time_frame)
-            if(@time_frame % 300 == 0)
-                @item_left = update_image(299,@image_random_seed.rand(100))
-                @item_right = update_image(401,@image_random_seed.rand(100))
+            # 画像の追加
+            if @time_frame % 100 == 0
+                @item_left << update_image(299,@image_random_seed.rand(100))
+                @item_right << update_image(401,@image_random_seed.rand(100))
             end
 
             if $DEBUG && @timer.stop?
@@ -99,22 +103,30 @@ module Game
             end
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
-                if check_add_point(@item_right.y,@item_right.height)
-                    @matz.receive_present(@item_right.class.status)
+                @item_right.each do |item|
+                    if check_add_point(item.y,item.height)
+                        @matz.receive_present(item.class.status)
+                    end
                 end
             elsif @leng_sensor.down?(LengSensor::RIGHT_PIN)
-                if check_add_point(@item_right.y,@item_right.height)
-                    @matz.receive_present(@item_right.class.status)
+                @item_right.each do |item|
+                    if check_add_point(item.y,item.height)
+                        @matz.receive_present(item.class.status)
+                    end
                 end
             end
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
-                if check_add_point(@item_left.y,@item_left.height)
-                    @matz.receive_present(@item_left.class.status)
+                @item_left.each do |item|
+                    if check_add_point(item.y,item.height)
+                        @matz.receive_present(item.class.status)
+                    end
                 end
             elsif @leng_sensor.down?(LengSensor::LEFT_PIN)
-                if check_add_point(@item_left.y,@item_left.height)
-                    @matz.receive_present(@item_left.class.status)
+                @item_left.each do |item|
+                    if check_add_point(item.y,item.height)
+                        @matz.receive_present(item.class.status)
+                    end
                 end
             end
         end
@@ -124,8 +136,12 @@ module Game
             Window.draw(299, 0, @lane_left)
             Window.draw(399, 0, @lane_center)
             Window.draw(401, 0, @lane_right)
-            @item_right.draw
-            @item_left.draw
+            @item_right.each do |item|
+                item.draw
+            end
+            @item_left.each do |item|
+                item.draw
+            end
             @matz.draw
             Window.draw_font(630, 30, "Time: #{@timer.remaining_time.round(2)}", @font, color: [0,0,0])
         end
