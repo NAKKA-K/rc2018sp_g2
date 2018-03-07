@@ -1,5 +1,7 @@
+require_relative '../../config'
+
 class Matz
-    @@favorability_rate = 20 # 好感度 
+    @@favorability_rate = 20 # 好感度
     @@favorability_status = 'normal' # 好感度段階
 
     def self.favorability_rate
@@ -11,8 +13,8 @@ class Matz
     end
 
     def initialize
-        @big_matz = Image.load('images/big_matz.jpeg')
-        @small_matz = Image.load('images/small_matz.jpeg')
+        @big_matz = Image.load("#{$ROOT_PATH}/images/big_matz.jpeg")
+        @small_matz = Image.load("#{$ROOT_PATH}/images/small_matz.jpeg")
 
         @font = Font.new(32, 'MS Pゴシック')
     end
@@ -38,7 +40,7 @@ class Matz
             when :cookie
                 -100 
             end
-        
+
         update_status
     end
 
@@ -47,7 +49,7 @@ class Matz
     # @favorability_rateを元に、statusを変更する
     # @favorability_rateが変更された後に呼び出す
     def update_status
-        @@favorability_status = 
+        @@favorability_status =
             case @@favorability_rate
             when (0..20)
                 'bad'
