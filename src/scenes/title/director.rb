@@ -8,9 +8,9 @@ module Title
             @font = Font.new(32, 'MS Pゴシック')
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
- 	    @image = Image.load("#{$ROOT_PATH}/images/title.png")
-	    @backimg = Image.load("#{$ROOT_PATH}/images/backgrand.bmp")
-	end
+            @image = Image.load("#{$ROOT_PATH}/images/title.png")
+            @backimg = Image.load("#{$ROOT_PATH}/images/backgrand.bmp")
+        end
 
         def play
             draw

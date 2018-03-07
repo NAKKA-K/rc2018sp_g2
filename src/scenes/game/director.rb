@@ -65,7 +65,7 @@ module Game
             if $DEBUG
                 @timer.start(how_many: 30)
             else
-                @timer.start(how_many: 60)
+                @timer.start(how_many: 90)
             end
 
             draw
