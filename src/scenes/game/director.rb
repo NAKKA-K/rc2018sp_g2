@@ -7,6 +7,7 @@ require_relative 'castle'
 require_relative 'bomb'
 require_relative 'cookie'
 require_relative 'matz'
+require_relative 'game_timer'
 require 'smalrubot'
 
 def update_time(time_frame)
@@ -41,15 +42,24 @@ module Game
             @item_num = 5
             @image_random_seed = Random.new
             @matz = Matz.new()
+            @timer = GameTimer.new()
+            @font = Font.new(32, 'MS Pゴシック')
         end
 
         def play
+            if $DEBUG
+                @timer.start(how_many: 30)
+            else
+                @timer.start(how_many: 60)
+            end
+
             draw
             @button_sensor.update(ButtonSensor::LEFT_PIN)
             @button_sensor.update(ButtonSensor::RIGHT_PIN)
             @item_right.update
             @item_left.update
             update
+            @timer.update
         end
 
         private
@@ -64,9 +74,9 @@ module Game
                 @item_right = update_image(600,@image_random_seed.rand(@item_num))
             end
 
-            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) || 
-                          @button_sensor.down?(ButtonSensor::RIGHT_PIN))
-                #SceneMgr.move_to(:result)
+            if $DEBUG && @timer.stop?
+                SceneMgr.move_to(:result)
+                @timer.reset
             end
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
@@ -83,6 +93,7 @@ module Game
             @item_right.draw
             @item_left.draw
             @matz.draw
+            Window.draw_font(630, 30, "Time: #{@timer.remaining_time.round(2)}", @font, color: [0,0,0])
         end
     end
 end
