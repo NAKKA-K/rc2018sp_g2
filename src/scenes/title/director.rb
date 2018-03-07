@@ -7,7 +7,9 @@ module Title
             @font = Font.new(32, 'MS Pゴシック')
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
-        end
+ 	    @image = Image.load('images/title.png')
+	    @backimg = Image.load('images/backimg.bmp')
+	end
 
         def play
             draw
@@ -33,7 +35,9 @@ module Title
         end
 
         def draw
-            Window.draw_font(250, 280, "タイトル画面", @font)
+	    Window.draw_scale(0, 0, @backimg, 2.5, 2.5,)
+            Window.draw_font(250, 100, "ときめきMatz", @font)
+	    Window.draw_scale(-100, 0, @image, 0.6, 0.6,)
         end
     end
 end
