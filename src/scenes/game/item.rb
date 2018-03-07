@@ -7,7 +7,7 @@ class Item
         @height = @image.height
         @x = x
         @y = y
-        @dy = 2
+        @dy = 3
     end
 
     def draw
