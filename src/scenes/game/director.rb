@@ -1,5 +1,6 @@
 require_relative '../../config'
 require_relative '../../sensors/button_sensor'
+require_relative '../../sensors/leng_sensor'
 require_relative 'player'
 require_relative 'item'
 require_relative 'ruby'
@@ -41,7 +42,8 @@ end
 module Game
     class Director
         def initialize()
-            @button_sensor = ButtonSensor.instance()
+            @button_sensor = ButtonSensor.instance
+            @leng_sensor = LengSensor.instance
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
             @item_right = ::Ruby.new(299,0,"#{$ROOT_PATH}/images/ruby_notes.png")	
             @item_left = ::Python.new(401,0,"#{$ROOT_PATH}/images/python_notes.png")
@@ -67,8 +69,12 @@ module Game
             end
 
             draw
-            @button_sensor.update(ButtonSensor::LEFT_PIN)
-            @button_sensor.update(ButtonSensor::RIGHT_PIN)
+            if $DEBUG
+                @button_sensor.update(ButtonSensor::LEFT_PIN)
+                @button_sensor.update(ButtonSensor::RIGHT_PIN)
+            end
+            @leng_sensor.update(LengSensor::LEFT_PIN)
+            @leng_sensor.update(LengSensor::RIGHT_PIN)
             @item_right.update
             @item_left.update
             update
@@ -96,9 +102,17 @@ module Game
                 if check_add_point(@item_right.y,@item_right.height)
                     @matz.receive_present(@item_right.class.status)
                 end
+            elsif @leng_sensor.down?(LengSensor::RIGHT_PIN)
+                if check_add_point(@item_right.y,@item_right.height)
+                    @matz.receive_present(@item_right.class.status)
+                end
             end
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
+                if check_add_point(@item_left.y,@item_left.height)
+                    @matz.receive_present(@item_left.class.status)
+                end
+            elsif @leng_sensor.down?(LengSensor::LEFT_PIN)
                 if check_add_point(@item_left.y,@item_left.height)
                     @matz.receive_present(@item_left.class.status)
                 end
