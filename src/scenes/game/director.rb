@@ -18,15 +18,15 @@ end
 def update_image(x,image_random_seed)
     case image_random_seed
     when 0 then
-        ::Ruby.new(x,0,"#{$ROOT_PATH}/images/ruby.png")
+        ::Ruby.new(x,0,"#{$ROOT_PATH}/images/ruby_notes.png")
     when 1 then
-        ::Python.new(x,0,"#{$ROOT_PATH}/images/python.png")
+        ::Python.new(x,0,"#{$ROOT_PATH}/images/python_notes.png")
     when 2 then
-        ::Castle.new(x,0,"#{$ROOT_PATH}/images/castle.jpg")
+        ::Castle.new(x,0,"#{$ROOT_PATH}/images/castle_notes.jpg")
     when 3 then
-        ::Cookie.new(x,0,"#{$ROOT_PATH}/images/cookie.png")
+        ::Cookie.new(x,0,"#{$ROOT_PATH}/images/cookie_notes.png")
     when 4 then
-        ::Bomb.new(x,0,"#{$ROOT_PATH}/images/bomb.png")
+        ::Bomb.new(x,0,"#{$ROOT_PATH}/images/bomb_notes.png")
     end
 end
 
@@ -43,8 +43,8 @@ module Game
         def initialize()
             @button_sensor = ButtonSensor.instance()
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
-            @item_right = ::Ruby.new(299,0,"#{$ROOT_PATH}/images/ruby.png")	
-            @item_left = ::Python.new(401,0,"#{$ROOT_PATH}/images/python.png")
+            @item_right = ::Ruby.new(299,0,"#{$ROOT_PATH}/images/ruby_notes.png")	
+            @item_left = ::Python.new(401,0,"#{$ROOT_PATH}/images/python_notes.png")
             @lane_right = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
             @lane_center =  Image.new(2,600,[255,255,255])
             @lane_left = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
@@ -91,7 +91,7 @@ module Game
                 SceneMgr.move_to(:result)
                 @timer.reset
             end
-            
+
             if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
                 if check_add_point(@item_right.y,@item_right.height)
                     @matz.receive_present(@item_right.class.status)
