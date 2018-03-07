@@ -19,15 +19,23 @@ end
 def update_image(x,image_random_seed)
     case image_random_seed
     when 0 then
-        ::Ruby.new(x,100,"#{$ROOT_PATH}/images/ruby.png")
+        ::Ruby.new(x,0,"#{$ROOT_PATH}/images/ruby.png")
     when 1 then
-        ::Python.new(x,100,"#{$ROOT_PATH}/images/python.png")
+        ::Python.new(x,0,"#{$ROOT_PATH}/images/python.png")
     when 2 then
-        ::Castle.new(x,100,"#{$ROOT_PATH}/images/castle.jpg")
+        ::Castle.new(x,0,"#{$ROOT_PATH}/images/castle.jpg")
     when 3 then
-        ::Cookie.new(x,100,"#{$ROOT_PATH}/images/cookie.png")
+        ::Cookie.new(x,0,"#{$ROOT_PATH}/images/cookie.png")
     when 4 then
-        ::Bomb.new(x,100,"#{$ROOT_PATH}/images/bomb.png")
+        ::Bomb.new(x,0,"#{$ROOT_PATH}/images/bomb.png")
+    end
+end
+
+def check_add_point(item_center,height)
+    if 450- (height / 2) <= item_center && item_center <= 600 - (height / 2)
+        true
+    else
+        false
     end
 end
 
@@ -37,10 +45,14 @@ module Game
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
-            @item_right = ::Ruby.new(400,100,"#{$ROOT_PATH}/images/ruby.png")
-            @item_left = ::Python.new(600,100,"#{$ROOT_PATH}/images/python.png")
+            @item_right = ::Ruby.new(299,0,"#{$ROOT_PATH}/images/ruby.png")	
+            @item_left = ::Python.new(401,0,"#{$ROOT_PATH}/images/python.png")
+            @lane_right = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
+            @lane_center =  Image.new(2,600,[255,255,255])
+            @lane_left = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
             @frm = 1
             @dx = 0
+            @dy = 1
             @time_frame = 0
             @item_num = 5
             @image_random_seed = Random.new
@@ -76,31 +88,42 @@ module Game
             @frm += 1
             @frm = 0 if @frm > 30
             @time_frame = update_time(@time_frame)
-            if(@time_frame % 90 == 0)
-                @item_left = update_image(400,@image_random_seed.rand(@item_num))
-                @item_right = update_image(600,@image_random_seed.rand(@item_num))
+            if(@time_frame % 300 == 0)
+                @item_left = update_image(299,@image_random_seed.rand(@item_num))
+                @item_right = update_image(401,@image_random_seed.rand(@item_num))
             end
 
             if $DEBUG && @timer.stop?
                 SceneMgr.move_to(:result)
                 @timer.reset
             end
-
+            
             if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
-                @matz.receive_present(@item_right.status)
+                if check_add_point(@item_right.y,@item_right.height)
+                    @matz.receive_present(@item_right.class.status)
+                end
             elsif @leng_sensor.down?(LengSensor::RIGHT_PIN)
-                @matz.receive_present(@item_right.status)
+                if check_add_point(@item_right.y,@item_right.height)
+                    @matz.receive_present(@item_right.class.status)
+                end
             end
 
             if $DEBUG && @leng_sensor.down?(ButtonSensor::LEFT_PIN)
-                @matz.receive_present(@item_left.status)
+                if check_add_point(@item_left.y,@item_left.height)
+                    @matz.receive_present(@item_left.class.status)
+                end
             elsif @leng_sensor.down?(LengSensor::LEFT_PIN)
-                @matz.receive_present(@item_left.status)
+                if check_add_point(@item_left.y,@item_left.height)
+                    @matz.receive_present(@item_left.class.status)
+                end
             end
         end
 
         def draw
             Window.draw(0, 0, @bg)
+            Window.draw(299, 0, @lane_left)
+            Window.draw(399, 0, @lane_center)
+            Window.draw(401, 0, @lane_right)
             @item_right.draw
             @item_left.draw
             @matz.draw
