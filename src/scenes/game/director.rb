@@ -3,6 +3,9 @@ require_relative 'player'
 require_relative 'item'
 require_relative 'ruby'
 require_relative 'python'
+require_relative 'castle'
+require_relative 'bomb'
+require_relative 'cookie'
 require_relative 'matz'
 require 'smalrubot'
 
@@ -16,6 +19,12 @@ def update_image(x,image_random_seed)
         ::Ruby.new(x,100,"images/ruby.png")
     when 1 then
         ::Python.new(x,100,"images/python.png")
+    when 2 then
+        ::Castle.new(x,100,"images/castle.jpg")
+    when 3 then
+        ::Cookie.new(x,100,"images/cookie.png")
+    when 4 then
+        ::Bomb.new(x,100,"images/bomb.png")
     end
 end
 
@@ -29,7 +38,7 @@ module Game
             @frm = 1
             @dx = 0
             @time_frame = 0
-            @item_num = 2
+            @item_num = 5
             @image_random_seed = Random.new
             @button_sensor = ButtonSensor.new(pin: 2)
             @button_right = ButtonSensor.new(pin: 6)
@@ -57,7 +66,7 @@ module Game
             @frm += 1
             @frm = 0 if @frm > 30
             @time_frame = update_time(@time_frame)
-            if(@time_frame % 180 == 0)
+            if(@time_frame % 90 == 0)
                 @item_left = update_image(400,@image_random_seed.rand(@item_num))
                 @item_right = update_image(600,@image_random_seed.rand(@item_num))
             end
