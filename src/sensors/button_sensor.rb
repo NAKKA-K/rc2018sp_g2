@@ -11,8 +11,8 @@ class ButtonSensor
     attr_reader :key_process, :raw_value
 
     def initialize()
-        @raw_value = []
-        @key_process = []
+        @raw_value = Array.new(9) {0}
+        @key_process = Array.new(9) {0}
     end
 
     def update(pin)

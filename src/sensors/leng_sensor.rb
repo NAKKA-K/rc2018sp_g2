@@ -11,8 +11,8 @@ class LengSensor
     attr_reader :key_process, :raw_value
 
     def initialize()
-        @raw_value = []
-        @key_process = Array.new(2) {0}
+        @raw_value = Array.new(4) {0}
+        @key_process = Array.new(4) {0}
     end
 
     def update(pin)
