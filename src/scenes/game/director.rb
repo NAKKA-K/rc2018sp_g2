@@ -32,8 +32,8 @@ module Game
             @item_num = 2
             @image_random_seed = Random.new
             @button_sensor = ButtonSensor.new(pin: 2)
-            #@button_right = ButtonSensor.new(pin: 6)
-            #@button_left = ButtonSensor.new(pin: 8)
+            @button_right = ButtonSensor.new(pin: 6)
+            @button_left = ButtonSensor.new(pin: 8)
             @matz = Matz.new()
         end
 
@@ -41,8 +41,8 @@ module Game
             draw
             update
             @button_sensor.update
-            #@button_right.update
-            #@button_left.update
+            @button_right.update
+            @button_left.update
             @item_right.update
             @item_left.update
             @matz.draw
@@ -64,15 +64,14 @@ module Game
             if @button_sensor.down?
                 SceneMgr.move_to(:result)
             end
-=begin
+
             if @button_right.down?
-                #@matz.receive_present(@ruby.status)
+                @matz.receive_present(@item_right.status)
             end
 
             if @button_left.down?
-                #@matz.receive_present(@python.status)
+                @matz.receive_present(@item_left.status)
             end
-=end
         end
 
         def draw
