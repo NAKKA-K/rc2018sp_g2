@@ -3,10 +3,12 @@
 module Title
     class Director
         def initialize(board)
-            @font = Font.new(32, 'MS Pゴシック')
+            @font = Font.new(64, 'MS Pゴシック')
             @board = board
             @button_right = ButtonSensor.new(pin: 6)
             @button_left = ButtonSensor.new(pin: 8)
+	    @image = Image.load('images/title.png')
+	    @backimg = Image.load('images/backimg.bmp')
         end
 
         def play
@@ -28,7 +30,9 @@ module Title
         end
 
         def draw
-            Window.draw_font(250, 280, "タイトル画面", @font)
+	    Window.draw_scale(0, 0, @backimg, 2.5, 2.5,)
+            Window.draw_font(250, 100, "ときめきMatz", @font)
+	    Window.draw_scale(-100, 0, @image, 0.6, 0.6,)
         end
     end
 end
