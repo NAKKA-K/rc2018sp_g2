@@ -9,7 +9,7 @@ module Title
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
  	    @image = Image.load("#{$ROOT_PATH}/images/title.png")
-	    @backimg = Image.load("#{$ROOT_PATH}/images/backimg.bmp")
+	    @backimg = Image.load("#{$ROOT_PATH}/images/backgrand.bmp")
 	end
 
         def play
@@ -36,9 +36,8 @@ module Title
         end
 
         def draw
-	    Window.draw_scale(0, 0, @backimg, 2.5, 2.5,)
-            Window.draw_font(250, 100, "ときめきMatz", @font)
-	    Window.draw_scale(-100, 0, @image, 0.6, 0.6,)
+	    Window.draw(0, 0, @backimg)
+	    Window.draw(230, 160, @image)
         end
     end
 end
