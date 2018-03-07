@@ -32,8 +32,6 @@ module Game
     class Director
         def initialize()
             @button_sensor = ButtonSensor.instance()
-            @ruby = ::Ruby.new(400,100,"images/ruby.png")
-            @python = ::Python.new(500,100,"images/python.png")
             @bg = Image.load("images/background.jpg")
             @frm = 1
             @dx = 0
@@ -64,7 +62,7 @@ module Game
                 @item_right = update_image(600,@image_random_seed.rand(@item_num))
             end
 
-            if @button_sensor.down?
+            if $DEBUG && @button_sensor.down?(ButtonSensor::DEBUG_ENTER_PIN)
                 SceneMgr.move_to(:result)
             end
             
