@@ -1,11 +1,3 @@
-=begin
-- 好感度変数
-- matz画像
-- matzステータス(好感度の段階)
-- プレゼント受け取り(好感度の上がり下がり。戻り値は好感度が上がったかどうかのtrue false)
-- 
-=end
-
 class Matz
     @@favorability_rate = 20 # 好感度 
     @@favorability_status = 'normal' # 好感度段階
@@ -62,10 +54,12 @@ class Matz
             when (80...100)
                 'wedding'
             else
-                if @@favorability_rate > 100
+                if @@favorability_rate >= 100
                     @@favorability_rate = 100
-                elsif @@favorability_rate < 0
+                    'wedding'
+                elsif @@favorability_rate <= 0
                     @@favorability_rate = 0
+                    'bad'
                 end
             end
     end

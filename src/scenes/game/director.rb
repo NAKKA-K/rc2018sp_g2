@@ -24,11 +24,13 @@ module Game
 
         def play
             draw
-            update
             @button_sensor.update
             @button_right.update
             @button_left.update
-            @matz.draw
+            if $DEBUG
+                p @button_left.key_process
+            end
+            update
         end
 
         private
@@ -41,8 +43,8 @@ module Game
             @python.update
             @ruby.update
             
-            if @button_sensor.down?
-                SceneMgr.move_to(:result)
+            if $DEBUG && @button_sensor.down?
+                #SceneMgr.move_to(:result)
             end
 
             if @button_right.down?
@@ -56,7 +58,9 @@ module Game
 
         def draw
             Window.draw(0, 0, @bg)
+            @matz.draw
             @ruby.draw
+            @python.draw
         end
     end
 end
