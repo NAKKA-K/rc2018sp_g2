@@ -43,7 +43,7 @@ class Matz
                 -100 
             end
 
-        $correct_sound.play
+        Sound.correct_effect_play
         update_status
     end
 
