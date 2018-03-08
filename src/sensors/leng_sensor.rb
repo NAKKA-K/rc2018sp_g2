@@ -10,14 +10,15 @@ class LengSensor
 
     attr_reader :key_process, :raw_value
 
-    def initialize()
-        @raw_value = Array.new(4) {0}
-        @key_process = Array.new(4) {0}
+    def initialize
+        @raw_value = []
+        @key_process = []
     end
 
     def update(pin)
         @raw_value[pin] = Board.board.analog_read(pin)
         if on?(pin)
+            @key_process[pin] ||= 0
             @key_process[pin] += 1
         else
             @key_process[pin] = 0
@@ -31,10 +32,6 @@ class LengSensor
 
     # true,falseでのみ返す
     def on?(pin)
-        if @raw_value[pin] >= 150
-            true
-        else
-            false
-        end
+        @raw_value[pin] >= 150
     end
 end

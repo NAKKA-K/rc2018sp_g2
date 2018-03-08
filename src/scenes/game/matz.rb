@@ -13,22 +13,21 @@ class Matz
         @@favorability_status
     end
 
+    
     def initialize
-        @big_matz = Image.load("#{$ROOT_PATH}/images/big_matz.jpeg")
+        @big_matz = Image.load("#{$ROOT_PATH}/images/big_matz.png")
         @small_matz = Image.load("#{$ROOT_PATH}/images/small_matz.jpeg")
-
         @font = Font.new(32, 'MS Pゴシック')
     end
 
     def draw
-        Window.draw(25, 30, @big_matz)
+        Window.draw(-450, 75, @big_matz)
         Window.draw(700, 500, @small_matz)
         Window.draw_font(700, 300, "#{@@favorability_status}", @font)
         Window.draw_font(700, 400, "#{@@favorability_rate}", @font)
     end
 
     def receive_present(present)
-        # TODO 音楽を選定し、変更します。
         @@favorability_rate +=
             case present
             when :ruby
@@ -57,26 +56,20 @@ class Matz
     # @favorability_rateが変更された後に呼び出す
     def update_status
         @@favorability_status =
-            case @@favorability_rate
-            when (0..20)
-                'bad'
-            when (20..40)
-                'normal'
-            when (40..60)
-                'like'
-            when (60..80)
-                'NaCl'
-            when (80...100)
-                'wedding'
+            if @@favorability_rate <= 0
+                '激怒'
+            elsif @@favorability_rate < 20
+                '他人'
+            elsif @@favorability_rate < 40
+                'ランチ'
+            elsif @@favorability_rate < 60
+                '交際'
+            elsif @@favorability_rate < 80
+                '同棲'
             else
-                if @@favorability_rate >= 100
-                    @@favorability_rate = 100
-                    'wedding'
-                elsif @@favorability_rate <= 0
-                    @@favorability_rate = 0
-                    'bad'
-                end
+                '結婚'
             end
+
     end
 
 end
