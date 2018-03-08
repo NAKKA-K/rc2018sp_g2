@@ -13,7 +13,7 @@ class Matz
     end
 
     def initialize
-        @big_matz = Image.load("#{$ROOT_PATH}/images/big_matz.jpeg")
+        @big_matz = Image.load("#{$ROOT_PATH}/images/big_matz.png")
         @small_matz = Image.load("#{$ROOT_PATH}/images/small_matz.jpeg")
 
         @font = Font.new(32, 'MS Pゴシック')
