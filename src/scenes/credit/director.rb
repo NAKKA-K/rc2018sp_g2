@@ -1,13 +1,14 @@
-﻿require_relative '../../sensors/button_sensor'
+﻿require_relative '../../config'
+require_relative '../../sensors/button_sensor'
 require_relative '../../sensors/leng_sensor'
 module Credit
-    
+
     class Director
         def initialize()
             @font = Font.new(40, 'MS Pゴシック')
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
-            @image = Image.load("images/credit.jpg")
+            @image = Image.load("#{$ROOT_PATH}/images/credit.jpg")
         end
 
         def play
@@ -22,7 +23,7 @@ module Credit
         private
 
         def update
-            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) || 
+            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) ||
                           @button_sensor.down?(ButtonSensor::RIGHT_PIN))
                 SceneMgr.move_to(:title)
             elsif @leng_sensor.down?(LengSensor::RIGHT_PIN) ||
