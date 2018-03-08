@@ -5,7 +5,7 @@ class Matz
     @@favorability_rate = 20 # 好感度
     @@favorability_status = 'normal' # 好感度段階
     @@font = Font.new(32, 'MS Pゴシック')
-    @@rate_x = 700
+    @@rate_x = 720
     @@rate_y = 400
 
     def self.favorability_rate
@@ -28,7 +28,7 @@ class Matz
     def draw
         Window.draw(-450, 75, @big_matz)
         Window.draw(700, 500, @small_matz)
-        Window.draw_font(700, 300, "#{@@favorability_status}", @@font)
+        Window.draw_font(710, 300, "#{@@favorability_status}", @@font)
         Window.draw_font(@@rate_x, @@rate_y, "#{@@favorability_rate}", @@font)
     end
 
