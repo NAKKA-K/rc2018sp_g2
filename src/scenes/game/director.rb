@@ -2,12 +2,14 @@ require_relative '../../config'
 require_relative '../../sensors/button_sensor'
 require_relative '../../sensors/leng_sensor'
 require_relative 'player'
+
 require_relative 'item'
-require_relative 'ruby'
-require_relative 'python'
-require_relative 'castle'
-require_relative 'bomb'
-require_relative 'cookie'
+require_relative 'items/ruby'
+require_relative 'items/python'
+require_relative 'items/castle'
+require_relative 'items/bomb'
+require_relative 'items/cookie'
+
 require_relative 'matz'
 require_relative 'game_timer'
 require 'smalrubot'
@@ -36,18 +38,20 @@ def check_add_point(item_center, height)
 end
 
 def add_effect(present)
-    case present
-    when :ruby
-        Window.draw(120, 0, @love)
-    when :castle
-        Window.draw(120, 0, @love)
-    when :python
-        Window.draw(120, 0, @trouble)
-    when :bomb
-        Window.draw(120, 0, @trouble)
-    when :cookie
-        Window.draw(120, 0, @anger)
-    end
+    tmp_image = 
+        case present
+        when :ruby
+            @love
+        when :castle
+            @love
+        when :python
+            @trouble
+        when :bomb
+            @trouble
+        when :cookie
+            @anger
+        end
+    Window.draw(120, 0, tmp_image)
 end
 
 module Game
