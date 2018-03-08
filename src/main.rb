@@ -1,13 +1,10 @@
 require 'dxruby'
-require_relative './config'
+require_relative 'config'
 require_relative 'scene_mgr'
 require_relative 'scenes/title/director'
 require_relative 'scenes/game/director'
 require_relative 'scenes/result/director'
 require_relative 'scenes/credit/director'
-require_relative 'sensors/board'
-
-$DEBUG = true
 
 Window.width = 800
 Window.height = 600
