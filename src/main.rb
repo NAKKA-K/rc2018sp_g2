@@ -17,7 +17,7 @@ SceneMgr.add(Game::Director.new(), :game)
 SceneMgr.add(Result::Director.new(), :result)
 SceneMgr.add(Credit::Director.new(), :credit)
 
-SceneMgr.move_to(:title)
+SceneMgr.move_to(:credit)
 
 Window.loop do
     break if Input.key_push?(K_ESCAPE)
