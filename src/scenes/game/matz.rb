@@ -31,19 +31,19 @@ class Matz
         @@favorability_rate +=
             case present
             when :ruby
-                Sound.correct_effect_play
+                Sound.ruby_sound_play
                 30
             when :castle
-                Sound.correct_effect_play
+                Sound.castle_sound_play
                 10
             when :python
-                Sound.wrong_effect_play
+                Sound.python_sound_play
                 -10
             when :bomb
-                Sound.wrong_effect_play
+                Sound.bomb_sound_play
                 -20
             when :cookie
-                Sound.wrong_effect_play
+                Sound.cookie_sound_play
                 -100 
             end
 
