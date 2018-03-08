@@ -15,12 +15,11 @@ class Matz
     def initialize
         @big_matz = Image.load("#{$ROOT_PATH}/images/big_matz.png")
         @small_matz = Image.load("#{$ROOT_PATH}/images/small_matz.jpeg")
-
         @font = Font.new(32, 'MS Pゴシック')
     end
 
     def draw
-        Window.draw(25, 30, @big_matz)
+        Window.draw(0, 300, @big_matz)
         Window.draw(700, 500, @small_matz)
         Window.draw_font(700, 300, "#{@@favorability_status}", @font)
         Window.draw_font(700, 400, "#{@@favorability_rate}", @font)
