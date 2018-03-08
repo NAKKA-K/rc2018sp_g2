@@ -10,7 +10,7 @@ module Result
             @font = Font.new(32, 'MS Pゴシック')
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
-            @big_matz = Image.load("#{$ROOT_PATH}/images/big_matz.jpeg")
+            @big_matz = Image.load("#{$ROOT_PATH}/images/result_big_matz.png")
             @backimg = Image.load("#{$ROOT_PATH}/images/backgrand.bmp")
         end
 
