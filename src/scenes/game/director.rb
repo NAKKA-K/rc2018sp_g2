@@ -62,8 +62,8 @@ module Game
 
             # 描画関係
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
-            @items_right = [::Ruby.new(401, 0, "#{$ROOT_PATH}/images/ruby_notes.png")]
-            @items_left = [::Cookie.new(299, 0, "#{$ROOT_PATH}/images/cookie_notes.png")]
+            @items_right = [::Ruby.new(401, -100, "#{$ROOT_PATH}/images/ruby_notes.png")]
+            @items_left = [::Cookie.new(299, -100, "#{$ROOT_PATH}/images/cookie_notes.png")]
             @lane_right = Image.new(100, 600, [200, 252, 190, 193]).box_fill(0, 450, 100, 600, [150, 249, 130, 137])
             @lane_center =  Image.new(2, 600, [255, 255, 255])
             @lane_left = Image.new(100, 600, [200, 252, 190, 193]).box_fill(0, 450, 100, 600, [150, 249, 130, 137])
@@ -156,18 +156,16 @@ module Game
                 @timer.reset
             end
 
-            if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
+            if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN) ||
+               @leng_sensor.down?(LengSensor::RIGHT_PIN)
                 check_all_items(@items_right)
                 @Rflag_effect = true
-            elsif @leng_sensor.down?(LengSensor::RIGHT_PIN)
-                check_all_items(@items_right)
             end
 
-            if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
+            if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN) ||
+               @leng_sensor.down?(LengSensor::LEFT_PIN)
                 check_all_items(@items_left)
                 @Lflag_effect = true
-            elsif @leng_sensor.down?(LengSensor::LEFT_PIN)
-                check_all_items(@items_left)
             end
         end
 
