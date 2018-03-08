@@ -32,21 +32,19 @@ def update_image(x,image_random_seed)
 end
 
 def check_add_point(item_center,height)
-    if 450- (height / 2) <= item_center && item_center <= 600 - (height / 2)
-        true
-    else
-        false
-    end
+    450- (height / 2) <= item_center && item_center <= 600 - (height / 2)
 end
 
+
 module Game
+
     class Director
-        def initialize()
+        def initialize
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
-            @item_right = [::Ruby.new(401,0,"#{$ROOT_PATH}/images/ruby_notes.png")]	
-            @item_left = [::Python.new(299,0,"#{$ROOT_PATH}/images/python_notes.png")]
+            @items_right = [::Ruby.new(401,0,"#{$ROOT_PATH}/images/ruby_notes.png")]
+            @items_left = [::Python.new(299,0,"#{$ROOT_PATH}/images/python_notes.png")]
             @lane_right = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
             @lane_center =  Image.new(2,600,[255,255,255])
             @lane_left = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
@@ -69,93 +67,96 @@ module Game
 
             draw
             if $DEBUG
-                @button_sensor.update(ButtonSensor::LEFT_PIN)
-                @button_sensor.update(ButtonSensor::RIGHT_PIN)
+                @button_sensor.update(ButtonSensor::LEFT_PIN); @button_sensor.update(ButtonSensor::RIGHT_PIN)
             end
-            @leng_sensor.update(LengSensor::LEFT_PIN)
-            @leng_sensor.update(LengSensor::RIGHT_PIN)
-            @item_right.each do |item|
-                item.update
-            end
-            @item_left.each do |item|
-                item.update
-            end
+            @leng_sensor.update(LengSensor::LEFT_PIN); @leng_sensor.update(LengSensor::RIGHT_PIN)
+
+            update_all_items(@items_right)
+            update_all_items(@items_left)
+
             update
             @timer.update
         end
 
         private
+        # itemsを一括でupdateする
+        def update_all_items(items = [])
+            items.each do |item|
+                item.update
+            end
+        end
+
 
         def update
             @dx = 10 if @frm == 30 # @dxにセンサー等の値を入れる
             @frm += 1
             @frm = 0 if @frm > 30
             @time_frame = update_time(@time_frame)
+
             # 画像の追加
             if @time_frame % 100 == 0
-                @item_left << update_image(299,@image_random_seed.rand(100))
-                @item_right << update_image(401,@image_random_seed.rand(100))
+                @items_left << update_image(299,@image_random_seed.rand(100))
+                @items_right << update_image(401,@image_random_seed.rand(100))
             end
+
             # 下まで来たときに配列削除
-            @item_right.each do |item|
-                if item.y > 600
-                    @item_right.delete_at(0)
-                end
-            end
-            @item_left.each do |item|
-                if item.y > 600
-                    @item_left.delete_at(0)
-                end
-            end
+            delete_item_from_outside_screen(@items_right)
+            delete_item_from_outside_screen(@items_left)
 
-
-            if $DEBUG && @timer.stop?
+            if @timer.stop?
                 SceneMgr.move_to(:result)
                 @timer.reset
             end
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
-                @item_right.each do |item|
-                    if check_add_point(item.y,item.height)
-                        @matz.receive_present(item.class.status)
-                    end
-                end
+                check_all_items(@items_right)
             elsif @leng_sensor.down?(LengSensor::RIGHT_PIN)
-                @item_right.each do |item|
-                    if check_add_point(item.y,item.height)
-                        @matz.receive_present(item.class.status)
-                    end
-                end
+                check_all_items(@items_right)
             end
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
-                @item_left.each do |item|
-                    if check_add_point(item.y,item.height)
-                        @matz.receive_present(item.class.status)
-                    end
-                end
+                check_all_items(@items_left)
             elsif @leng_sensor.down?(LengSensor::LEFT_PIN)
-                @item_left.each do |item|
-                    if check_add_point(item.y,item.height)
-                        @matz.receive_present(item.class.status)
-                    end
+                check_all_items(@items_left)
+            end
+        end
+
+        # item配列を一括で判定があるかチェックする
+        def check_all_items(items = [])
+            items.each do |item|
+                if check_add_point(item.y,item.height)
+                    @matz.receive_present(item.class.status)
                 end
             end
         end
+
+        def delete_item_from_outside_screen(items = [], outline: 600)
+            items.each do |item|
+                if item.y > outline
+                    items.delete_at(0)
+                end
+            end
+        end
+
 
         def draw
             Window.draw(0, 0, @bg)
             Window.draw(299, 0, @lane_left)
             Window.draw(399, 0, @lane_center)
             Window.draw(401, 0, @lane_right)
-            @item_right.each do |item|
-                item.draw
-            end
-            @item_left.each do |item|
-                item.draw
-            end
+
+            draw_all_items(@items_right)
+            draw_all_items(@items_left)
+
             @matz.draw
+
             Window.draw_font(630, 30, "Time: #{@timer.remaining_time.round(2)}", @font, color: [0,0,0])
+        end
+
+        def draw_all_items(items)
+            items.each do |item|
+                item.draw
+            end
         end
     end
 end
