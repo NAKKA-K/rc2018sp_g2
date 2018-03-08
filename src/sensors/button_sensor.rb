@@ -10,14 +10,15 @@ class ButtonSensor
 
     attr_reader :key_process, :raw_value
 
-    def initialize()
-        @raw_value = Array.new(9) {0}
-        @key_process = Array.new(9) {0}
+    def initialize
+        @raw_value = []
+        @key_process = []
     end
 
     def update(pin)
         @raw_value[pin] = Board.board.digital_read(pin)
         if on?(pin)
+            @key_process[pin] ||= 0
             @key_process[pin] += 1
         else
             @key_process[pin] = 0
@@ -31,11 +32,7 @@ class ButtonSensor
 
     # true,falseでのみ返す
     def on?(pin)
-        if @raw_value[pin] == 1
-            true
-        else
-            false
-        end
+        @raw_value[pin] == 1 
     end
 
 end
