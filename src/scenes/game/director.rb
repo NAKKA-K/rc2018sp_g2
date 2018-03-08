@@ -42,16 +42,15 @@ def add_effect(present)
     when :castle
         Window.draw(120, 0, @love)
     when :python
-        Window.draw(120, 0, @love)
+        Window.draw(120, 0, @trouble)
     when :bomb
-        Window.draw(120, 0, @love)
+        Window.draw(120, 0, @trouble)
     when :cookie
-        Window.draw(120, 0, @love)
+        Window.draw(120, 0, @anger)
     end
 end
 
 module Game
-
     class Director
         def initialize
             @button_sensor = ButtonSensor.instance
@@ -60,12 +59,13 @@ module Game
             # 描画関係
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
             @items_right = [::Ruby.new(401, 0, "#{$ROOT_PATH}/images/ruby_notes.png")]
-            @items_left = [::Python.new(299, 0, "#{$ROOT_PATH}/images/python_notes.png")]
+            @items_left = [::Cookie.new(299, 0, "#{$ROOT_PATH}/images/cookie_notes.png")]
             @lane_right = Image.new(100, 600, [200, 252, 190, 193]).box_fill(0, 450, 100, 600, [150, 249, 130, 137])
             @lane_center =  Image.new(2, 600, [255, 255, 255])
             @lane_left = Image.new(100, 600, [200, 252, 190, 193]).box_fill(0, 450, 100, 600, [150, 249, 130, 137])
             @love = Image.load("#{$ROOT_PATH}/images/love.png").set_color_key(C_WHITE)
-
+            @trouble = Image.load("#{$ROOT_PATH}/images/trouble.png").set_color_key(C_WHITE)
+            @anger = Image.load("#{$ROOT_PATH}/images/anger.png").set_color_key(C_WHITE)
             @frm = 1
             @dx = 0
             @dy = 1
