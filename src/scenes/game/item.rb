@@ -19,7 +19,8 @@ class Item
         @status
     end
 
-    def update
-        @y += @dy
+    def update(dx = 0, dy = @dy)
+        @x += dx
+        @y += dy
     end
 end

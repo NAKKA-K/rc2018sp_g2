@@ -97,7 +97,7 @@ module Game
 
             update_all_items(@items_right)
             update_all_items(@items_left)
-
+            @matz.update_all_presents
             update
             @timer.update
         end
@@ -114,7 +114,7 @@ module Game
             @dx = 10 if @frm == 30 # @dxにセンサー等の値を入れる
             @frm += 1
             @frm = 0 if @frm > 30
-            
+
             if @Rflag_effect
                 if @Rcount_for_effect != 20
                     check_all_items_for_effect(@items_right)
@@ -171,7 +171,7 @@ module Game
         def check_all_items(items = [])
             items.each do |item|
                 if check_add_point(item.y, item.height)
-                    @matz.receive_present(item.class.status)
+                    @matz.receive_present(item)
                 end
             end
         end
@@ -202,6 +202,7 @@ module Game
 
             draw_all_items(@items_right)
             draw_all_items(@items_left)
+            draw_all_items(@matz.get_presents)
 
             Window.draw_font(630, 30, "Time: #{@timer.remaining_time.round(2)}", @font, color: [0,0,0])
         end
