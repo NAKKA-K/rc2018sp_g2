@@ -4,19 +4,18 @@ module Credit
     
     class Director
         def initialize()
-            @font = Font.new(32, 'MS Pゴシック')
+            @font = Font.new(40, 'MS Pゴシック')
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
+            @image = Image.load("images/credit.jpg")
         end
 
         def play
             draw
             if $DEBUG
-                @button_sensor.update(ButtonSensor::LEFT_PIN)
-                @button_sensor.update(ButtonSensor::RIGHT_PIN)
+                @button_sensor.update(ButtonSensor::LEFT_PIN); @button_sensor.update(ButtonSensor::RIGHT_PIN)
             end
-            @leng_sensor.update(LengSensor::LEFT_PIN)
-            @leng_sensor.update(LengSensor::RIGHT_PIN)
+            @leng_sensor.update(LengSensor::LEFT_PIN); @leng_sensor.update(LengSensor::RIGHT_PIN)
             update
         end
 
@@ -33,7 +32,10 @@ module Credit
         end
 
         def draw
-            Window.draw_font(250, 280, "credit画面", @font)
+            Window.draw(0, 0, @image)
+            Window.draw_font(320, 80, "クレジット", @font)
+            Window.draw_font(50, 200, "  プログラマ  　 中村翔    越智亮太", @font)
+            Window.draw_font(50, 300, "ハードウェア　 武本和久 　柳原直樹", @font)
         end
     end
 
