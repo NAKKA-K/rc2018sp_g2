@@ -16,6 +16,8 @@ module Title
             draw
             if $DEBUG
                 @button_sensor.update(ButtonSensor::LEFT_PIN); @button_sensor.update(ButtonSensor::RIGHT_PIN)
+            else
+                @button_sensor.update(ButtonSensor::RIGHT_PIN) # 運営操作用のマスターkey
             end
             @leng_sensor.update(LengSensor::LEFT_PIN); @leng_sensor.update(LengSensor::RIGHT_PIN)
             update
@@ -29,6 +31,8 @@ module Title
                 SceneMgr.move_to(:game)
             elsif @leng_sensor.down?(LengSensor::RIGHT_PIN) ||
                   @leng_sensor.down?(LengSensor::LEFT_PIN)
+                SceneMgr.move_to(:game)
+            elsif !$DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN) # 運営操作用のマスターkey
                 SceneMgr.move_to(:game)
             end
         end
