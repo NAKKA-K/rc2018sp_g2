@@ -6,7 +6,7 @@ require_relative 'scenes/game/director'
 require_relative 'scenes/result/director'
 require_relative 'scenes/credit/director'
 
-$DEBUG = true
+$DEBUG = false
 
 Window.width = 800
 Window.height = 600
