@@ -16,8 +16,5 @@
 	Window.draw_font(50, 200, "  プログラマ  　 中村翔    越智亮太", @font)
 	Window.draw_font(50, 300, "ハードウェア　 武本和久 　柳原直樹", @font)
     end
-
-
-    
 end
 
