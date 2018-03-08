@@ -28,22 +28,25 @@ class Matz
     end
 
     def receive_present(present)
-        # TODO 音楽を選定し、変更します。
         @@favorability_rate +=
             case present
             when :ruby
+                $ruby_sound.play
                 30
             when :castle
+                $castle_sound.play
                 10
             when :python
+                $python_sound.play
                 -10
             when :bomb
+                $bomb_sound.play
                 -20
             when :cookie
+                $cookie_sound.play
                 -100 
             end
 
-        $correct_sound.play
         update_status
     end
 
