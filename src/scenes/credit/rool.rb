@@ -19,10 +19,5 @@
 
 
     
-=begin
-    def update
-        @y += @dy
-    end
-=end
 end
 
