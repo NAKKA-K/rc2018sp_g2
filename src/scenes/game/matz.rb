@@ -51,7 +51,7 @@ class Matz
                 SoundMgr.cookie_sound_play
                 -100
             end
-        @present_dy = (@@rate_y-present.y) / ((@@rate_x - present.x) / @present_dx) # 移動距離を計算します。
+        @present_dy = (@@rate_y - present.y) / ((@@rate_x - present.x) / @present_dx) # 移動距離を計算します。
         @presents.push(present.dup)
         update_status
     end
