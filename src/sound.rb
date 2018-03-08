@@ -1,7 +1,7 @@
 require 'dxruby'
 require_relative './config'
 
-class Sound
+class SoundMgr
     @@ruby_sound    = Sound.new("#{$ROOT_PATH}/sound/ruby.wav")
     @@castle_sound  = Sound.new("#{$ROOT_PATH}/sound/castle.wav")
     @@python_sound  = Sound.new("#{$ROOT_PATH}/sound/python.wav")
