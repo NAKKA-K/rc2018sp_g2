@@ -27,11 +27,13 @@ class ButtonSensor
 
     # 押した瞬間だけ判定する
     def down?(pin)
+        @key_process[pin] ||= 0
         @key_process[pin] == 1
     end
 
     # true,falseでのみ返す
     def on?(pin)
+        @raw_value[pin] ||= 0
         @raw_value[pin] == 1 
     end
 

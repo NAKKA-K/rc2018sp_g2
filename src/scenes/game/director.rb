@@ -12,7 +12,9 @@ require_relative 'items/cookie'
 
 require_relative 'matz'
 require_relative 'game_timer'
+require_relative 'love_gage'
 require 'smalrubot'
+
 
 def update_time(time_frame)
     time_frame += 1
@@ -85,6 +87,8 @@ module Game
             @matz = Matz.new()
             @timer = GameTimer.new()
             @font = Font.new(32, 'MS Pゴシック')
+
+            @love_gage = LoveGage.new(@matz)
         end
 
         def play
@@ -198,7 +202,10 @@ module Game
 
         def draw
             Window.draw(0, 0, @bg)
+            
+            @love_gage.draw
             @matz.draw
+
             Window.draw(299, 0, @lane_left)
             Window.draw(399, 0, @lane_center)
             Window.draw(401, 0, @lane_right)
