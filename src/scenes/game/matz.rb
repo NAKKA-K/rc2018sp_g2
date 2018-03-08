@@ -1,4 +1,5 @@
 require_relative '../../config'
+require_relative '../../sound'
 
 class Matz
     @@favorability_rate = 20 # 好感度
@@ -27,17 +28,23 @@ class Matz
     end
 
     def receive_present(present)
+        # TODO 音楽を選定し、変更します。
         @@favorability_rate +=
             case present
             when :ruby
+                $correct_sound.play
                 30
             when :castle
+                $correct_sound.play
                 10
             when :python
+                $correct_sound.play
                 -10
             when :bomb
+                $correct_sound.play
                 -20
             when :cookie
+                $correct_sound.play
                 -100 
             end
 
