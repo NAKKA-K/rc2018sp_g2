@@ -141,14 +141,13 @@ module Game
 
         def draw
             Window.draw(0, 0, @bg)
+            @matz.draw
             Window.draw(299, 0, @lane_left)
             Window.draw(399, 0, @lane_center)
             Window.draw(401, 0, @lane_right)
 
             draw_all_items(@items_right)
             draw_all_items(@items_left)
-
-            @matz.draw
 
             Window.draw_font(630, 30, "Time: #{@timer.remaining_time.round(2)}", @font, color: [0,0,0])
         end
