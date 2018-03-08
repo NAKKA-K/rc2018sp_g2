@@ -1,9 +1,13 @@
 class Item
-    attr_reader :x
-    attr_reader :y
-    attr_reader :height
+    attr_reader :x, :y, :height
     @status = nil
-    def initialize(x = 0,y = 300,image)
+
+    def self.status
+        @status
+    end
+
+
+    def initialize(x = 0, y = 300, image)
         @image = Image.load(image)
         @height = @image.height
         @x = x
@@ -12,17 +16,11 @@ class Item
     end
 
     def draw
-        Window.draw(@x,@y,@image)
-    end
-
-
-    def self.status
-        @status
+        Window.draw(@x, @y, @image)
     end
 
     def update(dx: 0, dy: @dy)
         @x += dx
         @y += dy
     end
-
 end
