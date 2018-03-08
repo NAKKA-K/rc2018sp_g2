@@ -12,6 +12,7 @@ class Matz
         @@favorability_status
     end
 
+    
     def initialize
         @big_matz = Image.load("#{$ROOT_PATH}/images/big_matz.jpeg")
         @small_matz = Image.load("#{$ROOT_PATH}/images/small_matz.jpeg")
@@ -50,26 +51,20 @@ class Matz
     # @favorability_rateが変更された後に呼び出す
     def update_status
         @@favorability_status =
-            case @@favorability_rate
-            when (0..20)
-                'bad'
-            when (20..40)
-                'normal'
-            when (40..60)
-                'like'
-            when (60..80)
-                'NaCl'
-            when (80...100)
-                'wedding'
+            if @@favorability_rate <= 0
+                '激怒'
+            elsif @@favorability_rate < 20
+                '他人'
+            elsif @@favorability_rate < 40
+                'ランチ'
+            elsif @@favorability_rate < 60
+                '交際'
+            elsif @@favorability_rate < 80
+                '同棲'
             else
-                if @@favorability_rate >= 100
-                    @@favorability_rate = 100
-                    'wedding'
-                elsif @@favorability_rate <= 0
-                    @@favorability_rate = 0
-                    'bad'
-                end
+                '結婚'
             end
+
     end
 
 end
