@@ -1,4 +1,5 @@
 class Item
+    attr_reader :x
     attr_reader :y
     attr_reader :height
     @status = nil
@@ -19,7 +20,9 @@ class Item
         @status
     end
 
-    def update
-        @y += @dy
+    def update(dx: 0, dy: @dy)
+        @x += dx
+        @y += dy
     end
+
 end

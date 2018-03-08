@@ -1,9 +1,10 @@
-﻿require_relative '../../sensors/button_sensor'
+﻿require_relative '../../config'
+require_relative '../../sensors/button_sensor'
 require_relative '../../sensors/leng_sensor'
 require_relative '../../scenes/credit/rool'
 
 module Credit
-    
+
     class Director
         def initialize
             @rool = Rool.new()
@@ -14,18 +15,16 @@ module Credit
         def play
             draw
             if $DEBUG
-                @button_sensor.update(ButtonSensor::LEFT_PIN)
-                @button_sensor.update(ButtonSensor::RIGHT_PIN)
+                @button_sensor.update(ButtonSensor::LEFT_PIN); @button_sensor.update(ButtonSensor::RIGHT_PIN)
             end
-            @leng_sensor.update(LengSensor::LEFT_PIN)
-            @leng_sensor.update(LengSensor::RIGHT_PIN)
+            @leng_sensor.update(LengSensor::LEFT_PIN); @leng_sensor.update(LengSensor::RIGHT_PIN)
             update
         end
 
         private
 
         def update
-            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) || 
+            if $DEBUG && (@button_sensor.down?(ButtonSensor::LEFT_PIN) ||
                           @button_sensor.down?(ButtonSensor::RIGHT_PIN))
                 SceneMgr.move_to(:title)
             elsif @leng_sensor.down?(LengSensor::RIGHT_PIN) ||

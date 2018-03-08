@@ -4,6 +4,9 @@ require_relative '../../sound'
 class Matz
     @@favorability_rate = 20 # 好感度
     @@favorability_status = 'normal' # 好感度段階
+    @@font = Font.new(32, 'MS Pゴシック')
+    @@rate_x = 700
+    @@rate_y = 400
 
     def self.favorability_rate
         @@favorability_rate
@@ -13,23 +16,25 @@ class Matz
         @@favorability_status
     end
 
-    
+
     def initialize
         @big_matz = Image.load("#{$ROOT_PATH}/images/big_matz.png")
         @small_matz = Image.load("#{$ROOT_PATH}/images/small_matz.jpeg")
-        @font = Font.new(32, 'MS Pゴシック')
+        @presents = []
+        @present_dx = 60
+        @present_dy = 0
     end
 
     def draw
         Window.draw(-450, 75, @big_matz)
         Window.draw(700, 500, @small_matz)
-        Window.draw_font(700, 300, "#{@@favorability_status}", @font)
-        Window.draw_font(700, 400, "#{@@favorability_rate}", @font)
+        Window.draw_font(700, 300, "#{@@favorability_status}", @@font)
+        Window.draw_font(@@rate_x, @@rate_y, "#{@@favorability_rate}", @@font)
     end
 
     def receive_present(present)
         @@favorability_rate +=
-            case present
+            case present.class.status
             when :ruby
                 Sound.ruby_sound_play
                 30
@@ -44,10 +49,29 @@ class Matz
                 -20
             when :cookie
                 Sound.cookie_sound_play
-                -100 
+                -100
             end
-
+        @present_dy = (@@rate_y-present.y)/((@@rate_x-present.x)/@present_dx) # 移動距離を計算します。
+        @presents.push(present.dup)
         update_status
+    end
+
+    def get_presents
+      @presents
+    end
+
+    def update_all_presents
+      @presents.each do |present|
+        present.update(dx: @present_dx, dy: @present_dy)
+      end
+    end
+
+    def delete_present_from_outside_screen(outline: @@rate_x)
+      if @presents[0] != nil
+        if @presents[0].x > outline
+          @presents.delete_at(0)
+        end
+      end
     end
 
     private

@@ -2,12 +2,14 @@ require_relative '../../config'
 require_relative '../../sensors/button_sensor'
 require_relative '../../sensors/leng_sensor'
 require_relative 'player'
+
 require_relative 'item'
-require_relative 'ruby'
-require_relative 'python'
-require_relative 'castle'
-require_relative 'bomb'
-require_relative 'cookie'
+require_relative 'items/ruby'
+require_relative 'items/python'
+require_relative 'items/castle'
+require_relative 'items/bomb'
+require_relative 'items/cookie'
+
 require_relative 'matz'
 require_relative 'game_timer'
 require 'smalrubot'
@@ -36,18 +38,20 @@ def check_add_point(item_center, height)
 end
 
 def add_effect(present)
-    case present
-    when :ruby
-        Window.draw(120, 0, @love)
-    when :castle
-        Window.draw(120, 0, @love)
-    when :python
-        Window.draw(120, 0, @trouble)
-    when :bomb
-        Window.draw(120, 0, @trouble)
-    when :cookie
-        Window.draw(120, 0, @anger)
-    end
+    tmp_image = 
+        case present
+        when :ruby
+            @love
+        when :castle
+            @love
+        when :python
+            @trouble
+        when :bomb
+            @trouble
+        when :cookie
+            @anger
+        end
+    Window.draw(120, 0, tmp_image)
 end
 
 module Game
@@ -58,8 +62,8 @@ module Game
 
             # 描画関係
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
-            @items_right = [::Ruby.new(401, 0, "#{$ROOT_PATH}/images/ruby_notes.png")]
-            @items_left = [::Cookie.new(299, 0, "#{$ROOT_PATH}/images/cookie_notes.png")]
+            @items_right = [::Ruby.new(401, -100, "#{$ROOT_PATH}/images/ruby_notes.png")]
+            @items_left = [::Cookie.new(299, -100, "#{$ROOT_PATH}/images/cookie_notes.png")]
             @lane_right = Image.new(100, 600, [200, 252, 190, 193]).box_fill(0, 450, 100, 600, [150, 249, 130, 137])
             @lane_center =  Image.new(2, 600, [255, 255, 255])
             @lane_left = Image.new(100, 600, [200, 252, 190, 193]).box_fill(0, 450, 100, 600, [150, 249, 130, 137])
@@ -97,7 +101,7 @@ module Game
 
             update_all_items(@items_right)
             update_all_items(@items_left)
-
+            @matz.update_all_presents
             update
             @timer.update
         end
@@ -114,7 +118,7 @@ module Game
             @dx = 10 if @frm == 30 # @dxにセンサー等の値を入れる
             @frm += 1
             @frm = 0 if @frm > 30
-            
+
             if @Rflag_effect
                 if @Rcount_for_effect != 20
                     check_all_items_for_effect(@items_right)
@@ -146,24 +150,23 @@ module Game
             # 下まで来たときに配列削除
             delete_item_from_outside_screen(@items_right)
             delete_item_from_outside_screen(@items_left)
+            @matz.delete_present_from_outside_screen
 
             if @timer.stop?
                 SceneMgr.move_to(:result)
                 @timer.reset
             end
 
-            if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
+            if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN) ||
+               @leng_sensor.down?(LengSensor::RIGHT_PIN)
                 check_all_items(@items_right)
                 @Rflag_effect = true
-            elsif @leng_sensor.down?(LengSensor::RIGHT_PIN)
-                check_all_items(@items_right)
             end
 
-            if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
+            if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN) ||
+               @leng_sensor.down?(LengSensor::LEFT_PIN)
                 check_all_items(@items_left)
                 @Lflag_effect = true
-            elsif @leng_sensor.down?(LengSensor::LEFT_PIN)
-                check_all_items(@items_left)
             end
         end
 
@@ -171,7 +174,7 @@ module Game
         def check_all_items(items = [])
             items.each do |item|
                 if check_add_point(item.y, item.height)
-                    @matz.receive_present(item.class.status)
+                    @matz.receive_present(item)
                 end
             end
         end
@@ -202,6 +205,7 @@ module Game
 
             draw_all_items(@items_right)
             draw_all_items(@items_left)
+            draw_all_items(@matz.get_presents)
 
             Window.draw_font(630, 30, "Time: #{@timer.remaining_time.round(2)}", @font, color: [0,0,0])
         end

@@ -5,7 +5,7 @@
 	@font = Font.new(40, 'MS Pゴシック')
         @button_sensor = ButtonSensor.instance
         @leng_sensor = LengSensor.instance
-	@image = Image.load("images/credit.jpg")
+	@image = Image.load("#{$ROOT_PATH}/images/credit.jpg")
         @y = 0
         @dy = 3
     end
