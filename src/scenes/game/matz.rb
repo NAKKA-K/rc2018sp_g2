@@ -1,5 +1,5 @@
 require_relative '../../config'
-require_relative '../../sound'
+require_relative '../../sound_mgr'
 
 class Matz
     @@favorability_rate = 20 # 好感度
@@ -36,22 +36,22 @@ class Matz
         @@favorability_rate +=
             case present.class.status
             when :ruby
-                Sound.ruby_sound_play
+                SoundMgr.ruby_sound_play
                 30
             when :castle
-                Sound.castle_sound_play
+                SoundMgr.castle_sound_play
                 10
             when :python
-                Sound.python_sound_play
+                SoundMgr.python_sound_play
                 -10
             when :bomb
-                Sound.bomb_sound_play
+                SoundMgr.bomb_sound_play
                 -20
             when :cookie
-                Sound.cookie_sound_play
+                SoundMgr.cookie_sound_play
                 -100
             end
-        @present_dy = (@@rate_y-present.y)/((@@rate_x-present.x)/@present_dx) # 移動距離を計算します。
+        @present_dy = (@@rate_y - present.y) / ((@@rate_x - present.x) / @present_dx) # 移動距離を計算します。
         @presents.push(present.dup)
         update_status
     end
