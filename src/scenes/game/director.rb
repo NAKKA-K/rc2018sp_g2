@@ -35,23 +35,48 @@ def check_add_point(item_center, height)
     450- (height / 2) <= item_center && item_center <= 600 - (height / 2)
 end
 
+def add_effect(present)
+    case present
+    when :ruby
+        Window.draw(120, 0, @love)
+    when :castle
+        Window.draw(120, 0, @love)
+    when :python
+        Window.draw(120, 0, @trouble)
+    when :bomb
+        Window.draw(120, 0, @trouble)
+    when :cookie
+        Window.draw(120, 0, @anger)
+    end
+end
 
 module Game
-
     class Director
         def initialize
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
+
+            # 描画関係
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
             @items_right = [::Ruby.new(401, 0, "#{$ROOT_PATH}/images/ruby_notes.png")]
-            @items_left = [::Python.new(299, 0, "#{$ROOT_PATH}/images/python_notes.png")]
+            @items_left = [::Cookie.new(299, 0, "#{$ROOT_PATH}/images/cookie_notes.png")]
             @lane_right = Image.new(100, 600, [200, 252, 190, 193]).box_fill(0, 450, 100, 600, [150, 249, 130, 137])
             @lane_center =  Image.new(2, 600, [255, 255, 255])
             @lane_left = Image.new(100, 600, [200, 252, 190, 193]).box_fill(0, 450, 100, 600, [150, 249, 130, 137])
+            @love = Image.load("#{$ROOT_PATH}/images/love.png").set_color_key(C_WHITE)
+            @trouble = Image.load("#{$ROOT_PATH}/images/trouble.png").set_color_key(C_WHITE)
+            @anger = Image.load("#{$ROOT_PATH}/images/anger.png").set_color_key(C_WHITE)
             @frm = 1
             @dx = 0
             @dy = 1
             @time_frame = 0
+
+            # 変数 得点時のeffectのため
+            @Rcount_for_effect = 0
+            @Rflag_effect = false
+            @Lcount_for_effect = 0
+            @Lflag_effect = false
+
             @image_random_seed = Random.new
             @matz = Matz.new()
             @timer = GameTimer.new()
@@ -64,7 +89,6 @@ module Game
             else
                 @timer.start(how_many: 90)
             end
-
             draw
             if $DEBUG
                 @button_sensor.update(ButtonSensor::LEFT_PIN); @button_sensor.update(ButtonSensor::RIGHT_PIN)
@@ -86,11 +110,31 @@ module Game
             end
         end
 
-
         def update
             @dx = 10 if @frm == 30 # @dxにセンサー等の値を入れる
             @frm += 1
             @frm = 0 if @frm > 30
+            
+            if @Rflag_effect
+                if @Rcount_for_effect != 20
+                    check_all_items_for_effect(@items_right)
+                    @Rcount_for_effect += 1
+                else
+                    @Rcount_for_effect = 0
+                    @Rflag_effect = false
+                end
+            end
+
+            if @Lflag_effect
+                if @Lcount_for_effect != 20
+                    check_all_items_for_effect(@items_left)
+                    @Lcount_for_effect += 1
+                else
+                    @Lcount_for_effect = 0
+                    @Lflag_effect = false
+                end
+            end
+
             @time_frame = update_time(@time_frame)
 
             # 画像の追加
@@ -110,12 +154,14 @@ module Game
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
                 check_all_items(@items_right)
+                @Rflag_effect = true
             elsif @leng_sensor.down?(LengSensor::RIGHT_PIN)
                 check_all_items(@items_right)
             end
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
                 check_all_items(@items_left)
+                @Lflag_effect = true
             elsif @leng_sensor.down?(LengSensor::LEFT_PIN)
                 check_all_items(@items_left)
             end
@@ -126,6 +172,14 @@ module Game
             items.each do |item|
                 if check_add_point(item.y, item.height)
                     @matz.receive_present(item.class.status)
+                end
+            end
+        end
+
+        def check_all_items_for_effect(items = [])
+            items.each do |item|
+                if check_add_point(item.y, item.height)
+                    add_effect(item.class.status)
                 end
             end
         end
