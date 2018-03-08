@@ -146,6 +146,7 @@ module Game
             # 下まで来たときに配列削除
             delete_item_from_outside_screen(@items_right)
             delete_item_from_outside_screen(@items_left)
+            @matz.delete_present_from_outside_screen
 
             if @timer.stop?
                 SceneMgr.move_to(:result)

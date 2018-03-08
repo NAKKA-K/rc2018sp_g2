@@ -21,7 +21,8 @@ class Matz
         @big_matz = Image.load("#{$ROOT_PATH}/images/big_matz.png")
         @small_matz = Image.load("#{$ROOT_PATH}/images/small_matz.jpeg")
         @presents = []
-        @present_dx = 50
+        @present_dx = 60
+        @present_dy = 0
     end
 
     def draw
@@ -50,6 +51,7 @@ class Matz
                 Sound.cookie_sound_play
                 -100
             end
+        @present_dy = (@@rate_y-present.y)/((@@rate_x-present.x)/@present_dx) # 移動距離を計算します。
         @presents.push(present.dup)
         update_status
     end
@@ -60,7 +62,15 @@ class Matz
 
     def update_all_presents
       @presents.each do |present|
-        present.update(@present_dx,0)
+        present.update(dx: @present_dx, dy: @present_dy)
+      end
+    end
+
+    def delete_present_from_outside_screen(outline: @@rate_x)
+      if @presents[0] != nil
+        if @presents[0].x > outline
+          @presents.delete_at(0)
+        end
       end
     end
 
