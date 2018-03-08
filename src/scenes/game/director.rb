@@ -16,22 +16,22 @@ def update_time(time_frame)
     time_frame += 1
 end
 
-def update_image(x,image_random_seed)
+def update_image(x, image_random_seed)
     case image_random_seed
     when (0..30) then
-        ::Ruby.new(x,0,"#{$ROOT_PATH}/images/ruby_notes.png")
+        ::Ruby.new(x, 0, "#{$ROOT_PATH}/images/ruby_notes.png")
     when (30..60) then
-        ::Castle.new(x,0,"#{$ROOT_PATH}/images/castle_notes.jpg")
+        ::Castle.new(x, 0, "#{$ROOT_PATH}/images/castle_notes.jpg")
     when (60..80) then
-        ::Python.new(x,0,"#{$ROOT_PATH}/images/python_notes.png")
+        ::Python.new(x, 0, "#{$ROOT_PATH}/images/python_notes.png")
     when (80..90) then
-        ::Bomb.new(x,0,"#{$ROOT_PATH}/images/bomb_notes.png")
+        ::Bomb.new(x, 0, "#{$ROOT_PATH}/images/bomb_notes.png")
     when (90..100) then
-        ::Cookie.new(x,0,"#{$ROOT_PATH}/images/cookie_notes.png")
+        ::Cookie.new(x, 0, "#{$ROOT_PATH}/images/cookie_notes.png")
     end
 end
 
-def check_add_point(item_center,height)
+def check_add_point(item_center, height)
     450- (height / 2) <= item_center && item_center <= 600 - (height / 2)
 end
 
@@ -43,11 +43,11 @@ module Game
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
-            @items_right = [::Ruby.new(401,0,"#{$ROOT_PATH}/images/ruby_notes.png")]
-            @items_left = [::Python.new(299,0,"#{$ROOT_PATH}/images/python_notes.png")]
-            @lane_right = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
-            @lane_center =  Image.new(2,600,[255,255,255])
-            @lane_left = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
+            @items_right = [::Ruby.new(401, 0, "#{$ROOT_PATH}/images/ruby_notes.png")]
+            @items_left = [::Python.new(299, 0, "#{$ROOT_PATH}/images/python_notes.png")]
+            @lane_right = Image.new(100, 600, [200, 252, 190, 193]).box_fill(0, 450, 100, 600, [150, 249, 130, 137])
+            @lane_center =  Image.new(2, 600, [255, 255, 255])
+            @lane_left = Image.new(100, 600, [200, 252, 190, 193]).box_fill(0, 450, 100, 600, [150, 249, 130, 137])
             @frm = 1
             @dx = 0
             @dy = 1
@@ -95,8 +95,8 @@ module Game
 
             # 画像の追加
             if @time_frame % 100 == 0
-                @items_left << update_image(299,@image_random_seed.rand(100))
-                @items_right << update_image(401,@image_random_seed.rand(100))
+                @items_left << update_image(299, @image_random_seed.rand(100))
+                @items_right << update_image(401, @image_random_seed.rand(100))
             end
 
             # 下まで来たときに配列削除
@@ -124,7 +124,7 @@ module Game
         # item配列を一括で判定があるかチェックする
         def check_all_items(items = [])
             items.each do |item|
-                if check_add_point(item.y,item.height)
+                if check_add_point(item.y, item.height)
                     @matz.receive_present(item.class.status)
                 end
             end
