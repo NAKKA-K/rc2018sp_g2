@@ -8,7 +8,7 @@ module Credit
     class Director
         def initialize
             @rool = Rool.new()
-	        @button_sensor = ButtonSensor.instance
+	    	@button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
         end
 
@@ -35,7 +35,7 @@ module Credit
         end
 
         def draw
-	    @rool.draw
+            @rool.draw
         end
     end
 
