@@ -39,6 +39,21 @@ def check_add_point(item_center,height)
     end
 end
 
+def add_effect(present)
+    case present
+    when :ruby
+        Window.draw(120, 0, @love)
+    when :castle
+        Window.draw(120, 0, @love)
+    when :python
+        Window.draw(120, 0, @love)
+    when :bomb
+        Window.draw(120, 0, @love)
+    when :cookie
+        Window.draw(120, 0, @love)
+    end
+end
+
 module Game
     class Director
         def initialize()
@@ -50,10 +65,13 @@ module Game
             @lane_right = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
             @lane_center =  Image.new(2,600,[255,255,255])
             @lane_left = Image.new(100,600,[200,252,190,193]).box_fill(0, 450, 100, 600,[150,249,130,137])
+            @love = Image.load("#{$ROOT_PATH}/images/love.png").set_color_key(C_WHITE)
             @frm = 1
             @dx = 0
             @dy = 1
             @time_frame = 0
+            @count = 0
+            @flag_effect = false
             @image_random_seed = Random.new
             @matz = Matz.new()
             @timer = GameTimer.new()
@@ -66,7 +84,6 @@ module Game
             else
                 @timer.start(how_many: 90)
             end
-
             draw
             if $DEBUG
                 @button_sensor.update(ButtonSensor::LEFT_PIN)
@@ -90,6 +107,21 @@ module Game
             @dx = 10 if @frm == 30 # @dxにセンサー等の値を入れる
             @frm += 1
             @frm = 0 if @frm > 30
+            
+            if @flag_effect
+                if @count != 30
+                    @item_right.each do |item|
+                        if check_add_point(item.y,item.height)
+                            add_effect(item.class.status)
+                        end
+                    end
+                    @count += 1
+                else
+                    @count = 0
+                    @flag_effect = false
+                end
+            end
+
             @time_frame = update_time(@time_frame)
             # 画像の追加
             if @time_frame % 100 == 0
@@ -118,6 +150,7 @@ module Game
                 @item_right.each do |item|
                     if check_add_point(item.y,item.height)
                         @matz.receive_present(item.class.status)
+                        @flag_effect = true
                     end
                 end
             elsif @leng_sensor.down?(LengSensor::RIGHT_PIN)
@@ -132,6 +165,7 @@ module Game
                 @item_left.each do |item|
                     if check_add_point(item.y,item.height)
                         @matz.receive_present(item.class.status)
+                        @flag_effect = true
                     end
                 end
             elsif @leng_sensor.down?(LengSensor::LEFT_PIN)
