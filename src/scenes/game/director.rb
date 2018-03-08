@@ -56,6 +56,8 @@ module Game
         def initialize
             @button_sensor = ButtonSensor.instance
             @leng_sensor = LengSensor.instance
+
+            # 描画関係
             @bg = Image.load("#{$ROOT_PATH}/images/background.jpg")
             @items_right = [::Ruby.new(401, 0, "#{$ROOT_PATH}/images/ruby_notes.png")]
             @items_left = [::Python.new(299, 0, "#{$ROOT_PATH}/images/python_notes.png")]
@@ -63,12 +65,18 @@ module Game
             @lane_center =  Image.new(2, 600, [255, 255, 255])
             @lane_left = Image.new(100, 600, [200, 252, 190, 193]).box_fill(0, 450, 100, 600, [150, 249, 130, 137])
             @love = Image.load("#{$ROOT_PATH}/images/love.png").set_color_key(C_WHITE)
+
             @frm = 1
             @dx = 0
             @dy = 1
             @time_frame = 0
-            @count = 0
-            @flag_effect = false
+
+            # 変数 得点時のeffectのため
+            @Rcount_for_effect = 0
+            @Rflag_effect = false
+            @Lcount_for_effect = 0
+            @Lflag_effect = false
+
             @image_random_seed = Random.new
             @matz = Matz.new()
             @timer = GameTimer.new()
@@ -102,19 +110,28 @@ module Game
             end
         end
 
-
         def update
             @dx = 10 if @frm == 30 # @dxにセンサー等の値を入れる
             @frm += 1
             @frm = 0 if @frm > 30
             
-            if @flag_effect
-                if @count != 30
+            if @Rflag_effect
+                if @Rcount_for_effect != 20
                     check_all_items_for_effect(@items_right)
-                    @count += 1
+                    @Rcount_for_effect += 1
                 else
-                    @count = 0
-                    @flag_effect = false
+                    @Rcount_for_effect = 0
+                    @Rflag_effect = false
+                end
+            end
+
+            if @Lflag_effect
+                if @Lcount_for_effect != 20
+                    check_all_items_for_effect(@items_left)
+                    @Lcount_for_effect += 1
+                else
+                    @Lcount_for_effect = 0
+                    @Lflag_effect = false
                 end
             end
 
@@ -137,12 +154,14 @@ module Game
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN)
                 check_all_items(@items_right)
+                @Rflag_effect = true
             elsif @leng_sensor.down?(LengSensor::RIGHT_PIN)
                 check_all_items(@items_right)
             end
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::LEFT_PIN)
                 check_all_items(@items_left)
+                @Lflag_effect = true
             elsif @leng_sensor.down?(LengSensor::LEFT_PIN)
                 check_all_items(@items_left)
             end
@@ -153,8 +172,6 @@ module Game
             items.each do |item|
                 if check_add_point(item.y, item.height)
                     @matz.receive_present(item.class.status)
-                    add_effect(item.class.status)
-                    @flag_effect = true
                 end
             end
         end
