@@ -162,7 +162,7 @@ module Game
                 SceneMgr.move_to(:result)
                 @timer.reset
             elsif !$DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN) # 運営操作用のマスターkey
-                SceneMgr.move_to(:game)
+                SceneMgr.move_to(:result)
             end
 
             if $DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN) ||

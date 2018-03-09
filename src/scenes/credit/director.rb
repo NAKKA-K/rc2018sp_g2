@@ -34,7 +34,7 @@ module Credit
                   @leng_sensor.down?(LengSensor::LEFT_PIN)
                 SceneMgr.move_to(:title)
             elsif !$DEBUG && @button_sensor.down?(ButtonSensor::RIGHT_PIN) # 運営操作用のマスターkey
-                SceneMgr.move_to(:game)
+                SceneMgr.move_to(:title)
             end
         end
 
