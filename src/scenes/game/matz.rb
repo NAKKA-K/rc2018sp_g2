@@ -37,7 +37,7 @@ class Matz
             case present.class.status
             when :ruby
                 SoundMgr.ruby_sound_play
-                30
+                20
             when :castle
                 SoundMgr.castle_sound_play
                 10
@@ -49,7 +49,7 @@ class Matz
                 -20
             when :cookie
                 SoundMgr.cookie_sound_play
-                -100
+                -30
             end
         @present_dy = (@@rate_y - present.y) / ((@@rate_x - present.x) / @present_dx) # 移動距離を計算します。
         @presents.push(present.dup)
